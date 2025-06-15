@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { auth } from './firebase';         // ✅ Your custom auth instance
-import { signOut } from 'firebase/auth';   // ✅ Firebase function
+import { auth } from './firebase';
+import { signOut } from 'firebase/auth';
 import LoginModal from './LoginModal';
+import Header from './Header'; // ✅ Import the Header
 
 function App() {
   const [user, setUser] = useState(null);
@@ -33,6 +34,8 @@ function App() {
 
   return (
     <div className="App">
+      <Header /> {/* ✅ Your custom header */}
+
       <nav style={styles.nav}>
         <div style={styles.spacer}></div>
         <button style={styles.profileBtn} onClick={handleProfileClick}>
