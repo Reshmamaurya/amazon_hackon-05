@@ -5,7 +5,10 @@ const app = express();
 const PORT = 5000;
 
 app.use(cors());
-
+app.get('/', (req, res) => {
+    res.send('Backend is up and running');
+  });
+  
 app.get('/api/ping', (req, res) => {
   res.json({ message: 'pong' });
 });
