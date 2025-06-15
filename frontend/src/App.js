@@ -1,7 +1,14 @@
 import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 
 function App() {
+  useEffect(() => {
+    fetch('http://localhost:5000/api/ping')
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch((err) => console.error('Backend error:', err));
+  }, []);
   return (
     <div className="App">
       <header className="App-header">
