@@ -1,8 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaSearch, FaShoppingCart, FaBars, FaMapMarkerAlt } from "react-icons/fa";
+import { Link, useNavigate } from 'react-router-dom';
+import { auth } from './firebase';         // ✅ Your custom auth instance
+import { signOut } from 'firebase/auth';  // import your firebase instance
 import "./Header.css";
 
 const Header = () => {
+  const [user, setUser] = useState(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const handleSignOut = () => {
+    signOut(auth).then(() => {
+      setUser(null);
+      navigate('/');
+    });
+  };
+
   return (
     <header className="header">
       {/* Top Bar */}
@@ -32,9 +53,50 @@ const Header = () => {
           <span>EN</span>
         </div>
 
-        <div className="account">
-          <p>Hello, sign in</p>
-          <strong>Account & Lists</strong>
+        {/* Account */}
+        <div
+          className="account-container"
+          onMouseEnter={() => setIsDropdownOpen(true)}
+          onMouseLeave={() => setIsDropdownOpen(false)}
+        >
+          <div className="account">
+            <p>Hello, {user ? (user.displayName || user.email) : 'sign in'}</p>
+            <strong>Account & Lists</strong>
+          </div>
+
+          {isDropdownOpen && (
+            <div className="account-dropdown">
+              {!user ? (
+                <>
+                  <Link to="/signin" className="signin-btn">Sign in</Link>
+                  <p>New customer? <Link to="/signin">Start here.</Link></p>
+                </>
+              ) : (
+                <>
+                  <button className="signin-btn" onClick={handleSignOut}>Sign Out</button>
+                  <p>Welcome back!</p>
+                </>
+              )}
+              <hr />
+              <div className="dropdown-columns">
+                <div>
+                  <strong>Your Lists</strong>
+                  <a href="#">Create a List</a>
+                  <a href="#">Find a List or Registry</a>
+                </div>
+                <div>
+                  <strong>Your Account</strong>
+                  <a href="#">Account</a>
+                  <a href="#">Orders</a>
+                  <a href="#">Recommendations</a>
+                  <a href="#">Browsing History</a>
+                  <a href="#">Watchlist</a>
+                  <a href="#">Kindle Unlimited</a>
+                  <a href="#">Music Library</a>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="orders">
