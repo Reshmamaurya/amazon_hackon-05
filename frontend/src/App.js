@@ -4,6 +4,7 @@ import Header from './Header';
 import LoginPage from './LoginPage';
 import HomePage from './HomePage'; // move homepage content here
 import SignupPage from './SignupPage';
+import SmartSpend from './SmartSpend';
 function App() {
   return (
     <Router>
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/signin" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/smartspend" element={<SmartSpend />} />
       </Routes>
     </Router>
   );

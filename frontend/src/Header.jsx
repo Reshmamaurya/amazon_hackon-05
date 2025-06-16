@@ -108,8 +108,14 @@ const Header = () => {
           <FaShoppingCart />
           <strong>Cart</strong>
         </div>
-      </div>
+        <div className="smartspend-link">
+        <Link to="/smartspend">
+          <strong>SmartSpend</strong>
+        </Link>
+        </div>
 
+      </div>
+      
       {/* Bottom Menu */}
       <nav className="nav-menu">
         <div className="nav-item"><FaBars /> All</div>
