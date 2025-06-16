@@ -1,0 +1,55 @@
+.signup-container {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .amazon-logo {
+    width: 100px;
+    display: block;
+    margin: 20px auto;
+  }
+  
+  .signup-box {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .signup-box h2 {
+    font-weight: normal;
+  }
+  
+  .signup-box label {
+    display: block;
+    margin-top: 10px;
+  }
+  
+  .signup-box input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 4px;
+    box-sizing: border-box;
+  }
+  
+  .create-btn {
+    width: 100%;
+    margin-top: 20px;
+    background-color: #f0c14b;
+    border: 1px solid #a88734;
+    padding: 8px;
+    cursor: pointer;
+  }
+  
+  .error-msg {
+    color: red;
+    margin-top: 10px;
+  }
+  
+  .terms,
+  .existing-account {
+    font-size: 12px;
+    margin-top: 20px;
+  }
+  

@@ -79,6 +79,13 @@
   height: 16px;
 }
 
+.account-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 .account, .orders, .cart {
   text-align: left;
 }
@@ -106,29 +113,38 @@
   white-space: nowrap;
   cursor: pointer;
 }
-.account-container {
-  position: relative;
-}
 
 .account-dropdown {
   position: absolute;
   top: 100%;
-  right: 0;
+  right: -20px; /* Shift dropdown slightly left if too right aligned */
   width: 350px;
   background-color: white;
   border: 1px solid #ccc;
   padding: 1rem;
   z-index: 100;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  color: black;
 }
 
 .account-dropdown .signin-btn {
-  background-color: #ffd814;
-  border: none;
-  padding: 10px;
+  display: block;
   width: 100%;
+  background-color: #ffd814;
+  border: 1px solid #fcd200;
+  border-radius: 4px;
+  padding: 10px 0;
   font-weight: bold;
-  margin-bottom: 0.5rem;
+  text-align: center;
+  font-size: 14px;
+  color: #111;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.account-dropdown .signin-btn:hover {
+  background-color: #f7ca00;
 }
 
 .account-dropdown p {
