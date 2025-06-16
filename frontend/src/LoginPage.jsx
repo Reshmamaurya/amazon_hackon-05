@@ -39,12 +39,27 @@ const LoginPage = () => {
     setError('');
     const provider = new GoogleAuthProvider();
     try {
-      await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+  
+      await fetch('http://localhost:5000/api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          uid: user.uid,
+          name: user.displayName,
+          email: user.email,
+        }),
+      });
+  
       navigate('/');
     } catch (err) {
-      setError(err.message);
+      setError('Google Sign-In failed: ' + err.message);
     }
   };
+  
 
   return (
     <div className="login-container">

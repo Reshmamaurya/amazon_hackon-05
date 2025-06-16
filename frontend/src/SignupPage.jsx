@@ -1,9 +1,9 @@
-// SignupPage.js
+// SignupPage.jsx
 import React, { useState } from 'react';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from './firebase';
 import { useNavigate } from 'react-router-dom';
-import './SignupPage.css'; // You'll create this for styling
+import './SignupPage.css';
 
 const SignupPage = () => {
   const [name, setName] = useState('');
@@ -23,7 +23,27 @@ const SignupPage = () => {
     }
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      // Firebase signup
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Set display name in Firebase
+      await updateProfile(user, { displayName: name });
+
+      // Send user to backend (MongoDB)
+      await fetch('http://localhost:5000/api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          uid: user.uid,
+          name: name,
+          email: user.email,
+        }),
+      });
+
+      // Navigate to homepage
       navigate('/');
     } catch (err) {
       switch (err.code) {
@@ -45,29 +65,58 @@ const SignupPage = () => {
 
   return (
     <div className="signup-container">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon" className="amazon-logo" />
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg"
+        alt="Amazon"
+        className="amazon-logo"
+      />
       <div className="signup-box">
         <h2>Create account</h2>
         <form onSubmit={handleSignup}>
           <label>Your name</label>
-          <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
 
           <label>Mobile number or email</label>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
 
           <label>Password</label>
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required placeholder="At least 6 characters" />
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            placeholder="At least 6 characters"
+          />
 
           <label>Re-enter password</label>
-          <input type="password" value={rePassword} onChange={(e) => setRePassword(e.target.value)} required />
+          <input
+            type="password"
+            value={rePassword}
+            onChange={(e) => setRePassword(e.target.value)}
+            required
+          />
 
-          <button type="submit" className="create-btn">Continue</button>
+          <button type="submit" className="create-btn">
+            Continue
+          </button>
         </form>
 
         {error && <p className="error-msg">{error}</p>}
 
         <p className="terms">
-          By creating an account, you agree to Amazon's <a href="#">Conditions of Use</a> and <a href="#">Privacy Notice</a>.
+          By creating an account, you agree to Amazon's{' '}
+          <a href="/terms">Conditions of Use</a> and{' '}
+          <a href="/privacy">Privacy Notice</a>.
         </p>
 
         <hr />
