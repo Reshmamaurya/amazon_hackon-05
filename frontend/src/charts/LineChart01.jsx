@@ -1,97 +1,94 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { useThemeProvider } from '../utils/ThemeContext';
-
-import { chartColors } from './ChartjsConfig';
+import React from 'react';
 import {
-  Chart, LineController, LineElement, Filler, PointElement, LinearScale, TimeScale, Tooltip,
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Filler,
+  Legend
 } from 'chart.js';
-import 'chartjs-adapter-moment';
+import { Line } from 'react-chartjs-2';
 
-// Import utilities
-import { formatValue } from '../utils/Utils';
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Filler,
+  Legend
+);
 
-Chart.register(LineController, LineElement, Filler, PointElement, LinearScale, TimeScale, Tooltip);
-
-function LineChart01({
-  data,
-  width,
-  height
-}) {
-
-  const [chart, setChart] = useState(null)
-  const canvas = useRef(null);
-  const { currentTheme } = useThemeProvider();
-  const darkMode = currentTheme === 'dark';
-  const { tooltipBodyColor, tooltipBgColor, tooltipBorderColor } = chartColors; 
-
-  useEffect(() => {
-    const ctx = canvas.current;
-    // eslint-disable-next-line no-unused-vars
-    const newChart = new Chart(ctx, {
-      type: 'line',
-      data: data,
-      options: {
-        layout: {
-          padding: 20,
-        },
-        scales: {
-          y: {
-            display: false,
-            beginAtZero: true,
-          },
-          x: {
-            type: 'time',
-            time: {
-              parser: 'MM-DD-YYYY',
-              unit: 'month',
-            },
-            display: false,
-          },
-        },
-        plugins: {
-          tooltip: {
-            callbacks: {
-              title: () => false, // Disable tooltip title
-              label: (context) => formatValue(context.parsed.y),
-            },
-            bodyColor: darkMode ? tooltipBodyColor.dark : tooltipBodyColor.light,
-            backgroundColor: darkMode ? tooltipBgColor.dark : tooltipBgColor.light,
-            borderColor: darkMode ? tooltipBorderColor.dark : tooltipBorderColor.light,
-          },
-          legend: {
-            display: false,
-          },
-        },
-        interaction: {
-          intersect: false,
-          mode: 'nearest',
-        },
-        maintainAspectRatio: false,
-        resizeDelay: 200,
+function LineChart01({ data, className }) {
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false,
       },
-    });
-    setChart(newChart);
-    return () => newChart.destroy();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (!chart) return;
-
-    if (darkMode) {
-      chart.options.plugins.tooltip.bodyColor = tooltipBodyColor.dark;
-      chart.options.plugins.tooltip.backgroundColor = tooltipBgColor.dark;
-      chart.options.plugins.tooltip.borderColor = tooltipBorderColor.dark;
-    } else {
-      chart.options.plugins.tooltip.bodyColor = tooltipBodyColor.light;
-      chart.options.plugins.tooltip.backgroundColor = tooltipBgColor.light;
-      chart.options.plugins.tooltip.borderColor = tooltipBorderColor.light;
+      tooltip: {
+        backgroundColor: '#111827',
+        titleColor: '#f3f4f6',
+        bodyColor: '#d1d5db',
+        padding: 10,
+        borderColor: '#4b5563',
+        borderWidth: 1,
+      },
+    },
+    scales: {
+      x: {
+        ticks: { color: '#94a3b8', font: { size: 12 } },
+        grid: { display: false }
+      },
+      y: {
+        ticks: { color: '#94a3b8', font: { size: 12 } },
+        grid: { color: 'rgba(203,213,225,0.2)' }
+      }
+    },
+    elements: {
+      point: {
+        radius: 4,
+        hoverRadius: 6,
+        backgroundColor: '#8b5cf6',
+        borderWidth: 0,
+      },
+      line: {
+        borderWidth: 2,
+        tension: 0.4,
+      }
     }
-    chart.update('none');
-  }, [currentTheme]);
+  };
+
+  // Prepare enhanced dataset with gradient backgroundColor
+  const enhancedData = {
+    ...data,
+    datasets: data.datasets.map(dataset => ({
+      ...dataset,
+      borderColor: '#8b5cf6',
+      pointBackgroundColor: '#8b5cf6',
+      fill: true,
+      backgroundColor: function (context) {
+        const { ctx, chartArea } = context.chart;
+
+        if (!chartArea) return null;
+
+        const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+        gradient.addColorStop(0, 'rgba(139, 92, 246, 0.3)'); // Violet-500, top
+        gradient.addColorStop(1, 'rgba(139, 92, 246, 0)');   // Transparent, bottom
+        return gradient;
+      }
+    }))
+  };
 
   return (
-    <canvas ref={canvas} width={width} height={height}></canvas>
+    <div className={className}>
+      <Line data={enhancedData} options={options} />
+    </div>
   );
 }
 

@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Tooltip from '../../components/Tooltip';
 import RealtimeChart from '../../charts/RealtimeChart';
 import { chartAreaGradient } from '../../charts/ChartjsConfig';
-
-// Utilities
 import { adjustColorOpacity, getCssVariable } from '../../utils/Utils';
 
 function DashboardCard05() {
@@ -30,7 +28,6 @@ function DashboardCard05() {
     const interval = setInterval(() => {
       setCounter((prev) => prev + 1);
     }, 2000);
-
     return () => clearInterval(interval);
   }, []);
 
@@ -41,9 +38,7 @@ function DashboardCard05() {
       return [...prev.slice(1), nextValue];
     });
 
-    setSlicedLabels((prev) => {
-      return [...prev.slice(1), new Date()];
-    });
+    setSlicedLabels((prev) => [...prev.slice(1), new Date()]);
   }, [counter]);
 
   const chartData = {
@@ -74,11 +69,12 @@ function DashboardCard05() {
   };
 
   return (
-    <div className="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white dark:bg-gray-800 shadow rounded-2xl p-5">
+    <div className="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white shadow-md rounded-2xl p-5 text-slate-900">
+      {/* Header */}
       <div className="flex items-center justify-between mb-3">
         <div>
-          <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">Real-Time Value</h2>
-          <div className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase mt-1">Live Updates</div>
+          <h2 className="text-lg font-semibold text-slate-800">Real-Time Value</h2>
+          <div className="text-xs font-semibold text-slate-400 uppercase mt-1">Live Updates</div>
         </div>
         <Tooltip className="ml-2">
           <div className="text-xs text-center whitespace-nowrap">
@@ -90,6 +86,7 @@ function DashboardCard05() {
         </Tooltip>
       </div>
 
+      {/* Chart */}
       <div className="aspect-[4/3]">
         <RealtimeChart data={chartData} width={595} height={240} />
       </div>

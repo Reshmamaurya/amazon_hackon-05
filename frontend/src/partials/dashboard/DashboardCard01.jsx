@@ -1,117 +1,114 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import LineChart from '../../charts/LineChart01';
 import { chartAreaGradient } from '../../charts/ChartjsConfig';
 import EditMenu from '../../components/DropdownEditMenu';
 import { adjustColorOpacity, getCssVariable } from '../../utils/Utils';
 
-function DashboardCard01() {
-    const chartData = {
-        labels: [
-          '12-01-2022',
-          '01-01-2023',
-          '02-01-2023',
-          '03-01-2023',
-          '04-01-2023',
-          '05-01-2023',
-          '06-01-2023',
-          '07-01-2023',
-          '08-01-2023',
-          '09-01-2023',
-          '10-01-2023',
-          '11-01-2023',
-          '12-01-2023',
-          '01-01-2024',
-          '02-01-2024',
-          '03-01-2024',
-          '04-01-2024',
-          '05-01-2024',
-          '06-01-2024',
-          '07-01-2024',
-          '08-01-2024',
-          '09-01-2024',
-          '10-01-2024',
-          '11-01-2024',
-          '12-01-2024',
-          '01-01-2025',
-        ],
-        datasets: [
-          // Indigo line
-          {
-            data: [732, 610, 610, 504, 504, 504, 349, 349, 504, 342, 504, 610, 391, 192, 154, 273, 191, 191, 126, 263, 349, 252, 423, 622, 470, 532],
-            fill: true,
-            backgroundColor: function(context) {
-              const chart = context.chart;
-              const {ctx, chartArea} = chart;
-              return chartAreaGradient(ctx, chartArea, [
-                { stop: 0, color: adjustColorOpacity(getCssVariable('--color-violet-500'), 0) },
-                { stop: 1, color: adjustColorOpacity(getCssVariable('--color-violet-500'), 0.2) }
-              ]);
-            },            
-            borderColor: getCssVariable('--color-violet-500'),
-            borderWidth: 2,
-            pointRadius: 0,
-            pointHoverRadius: 3,
-            pointBackgroundColor: getCssVariable('--color-violet-500'),
-            pointHoverBackgroundColor: getCssVariable('--color-violet-500'),
-            pointBorderWidth: 0,
-            pointHoverBorderWidth: 0,
-            clip: 20,
-            tension: 0.2,
-          },
-          // Gray line
-          {
-            data: [532, 532, 532, 404, 404, 314, 314, 314, 314, 314, 234, 314, 234, 234, 314, 314, 314, 388, 314, 202, 202, 202, 202, 314, 720, 642],
-            borderColor: adjustColorOpacity(getCssVariable('--color-gray-500'), 0.25),
-            borderWidth: 2,
-            pointRadius: 0,
-            pointHoverRadius: 3,
-            pointBackgroundColor: adjustColorOpacity(getCssVariable('--color-gray-500'), 0.25),
-            pointHoverBackgroundColor: adjustColorOpacity(getCssVariable('--color-gray-500'), 0.25),
-            pointBorderWidth: 0,
-            pointHoverBorderWidth: 0,
-            clip: 20,
-            tension: 0.2,
-          },
-        ],
-      };
+function DashboardCard01({ startDate, endDate }) {
+  const [chartData, setChartData] = useState(null);
+  const [uid, setUid] = useState(null);
+
+  useEffect(() => {
+    const auth = getAuth();
+
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUid(user.uid);
+      } else {
+        console.warn('User not logged in');
+        setUid(null);
+      }
+    });
+
+    return () => unsubscribe(); // cleanup listener
+  }, []);
+
+  useEffect(() => {
+    if (!uid || !startDate || !endDate) return;
+
+    const fetchBurnRate = async () => {
+      try {
+        const url = new URL(`http://localhost:5000/api/payments/burnrate/${uid}`);
+        url.searchParams.append('start', startDate);
+        url.searchParams.append('end', endDate);
+
+        const response = await fetch(url);
+        if (!response.ok) throw new Error("Failed to fetch burn rate");
+
+        const data = await response.json();
+
+        const labels = data.map(item => item._id);
+        const values = data.map(item => item.totalSpent);
+        
+        setChartData({
+          labels,
+          datasets: [
+            {
+              data: values,
+              fill: true,
+              backgroundColor: function (context) {
+                const chart = context.chart;
+                const { ctx, chartArea } = chart;
+                return chartAreaGradient(ctx, chartArea, [
+                  { stop: 0, color: adjustColorOpacity(getCssVariable('--color-violet-500'), 0) },
+                  { stop: 1, color: adjustColorOpacity(getCssVariable('--color-violet-500'), 0.2) },
+                ]);
+              },
+              borderColor: getCssVariable('--color-violet-500'),
+              borderWidth: 2,
+              pointRadius: 0,
+              pointHoverRadius: 3,
+              pointBackgroundColor: getCssVariable('--color-violet-500'),
+              pointHoverBackgroundColor: getCssVariable('--color-violet-500'),
+              pointBorderWidth: 0,
+              pointHoverBorderWidth: 0,
+              clip: 20,
+              tension: 0.3,
+            },
+          ],
+        });
+      } catch (err) {
+        console.error("Error fetching chart data:", err);
+      }
+    };
+
+    fetchBurnRate();
+  }, [uid, startDate, endDate]);
 
   return (
-    <div className="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white dark:bg-gray-800 shadow rounded-2xl p-5">
+    <div className="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white text-slate-900 shadow-md rounded-2xl p-5">
       {/* Card Header */}
       <div className="flex justify-between items-start mb-3">
         <div>
-          <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">Acme Plus</h2>
-          <div className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase mt-1">Sales</div>
+          <h2 className="text-lg font-semibold text-slate-800">Burn Rate</h2>
+          <div className="text-xs font-semibold text-slate-400 uppercase mt-1">Spending Trend</div>
         </div>
         <EditMenu align="right" className="relative inline-flex">
-          <li>
-            <Link className="font-medium text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-200 flex py-1 px-3" to="#0">
-              Option 1
-            </Link>
-          </li>
-          <li>
-            <Link className="font-medium text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-200 flex py-1 px-3" to="#0">
-              Option 2
-            </Link>
-          </li>
-          <li>
-            <Link className="font-medium text-sm text-red-500 hover:text-red-600 flex py-1 px-3" to="#0">
-              Remove
-            </Link>
-          </li>
+          <li><Link className="font-medium text-sm text-slate-600 hover:text-slate-800 flex py-1 px-3" to="#0">Option 1</Link></li>
+          <li><Link className="font-medium text-sm text-slate-600 hover:text-slate-800 flex py-1 px-3" to="#0">Option 2</Link></li>
+          <li><Link className="font-medium text-sm text-red-500 hover:text-red-600 flex py-1 px-3" to="#0">Remove</Link></li>
         </EditMenu>
       </div>
 
       {/* Value and Growth */}
       <div className="flex items-center justify-between mb-4">
-        <div className="text-3xl font-bold text-gray-800 dark:text-gray-100">$24,780</div>
-        <div className="text-sm font-medium text-green-700 px-2 py-0.5 bg-green-500/20 rounded-full">+49%</div>
+        <div className="text-3xl font-bold text-slate-900">
+          ₹{chartData ? chartData.datasets[0].data.reduce((a, b) => a + b, 0) : '--'}
+        </div>
+        <div className="text-sm font-medium text-green-700 px-2 py-0.5 bg-green-100 rounded-full">
+          + Active
+        </div>
       </div>
 
       {/* Chart */}
-      <div className="aspect-[4/3]">
-        <LineChart data={chartData} width={389} height={160} />
+      <div className="h-32 relative">
+        {chartData ? (
+          <LineChart data={chartData} className="absolute inset-0 w-full h-full" />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center text-sm text-slate-400">Loading...</div>
+        )}
       </div>
     </div>
   );

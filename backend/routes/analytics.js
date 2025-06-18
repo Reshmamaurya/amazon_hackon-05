@@ -23,4 +23,78 @@ router.get('/payment-breakdown/:uid', async (req, res) => {
   }
 });
 
+// 🔹 GET burn rate for a user within a date range
+router.get('/payments/burnrate/:uid', async (req, res) => {
+  try {
+    const uid = req.params.uid?.trim();
+    const startDate = new Date(req.query.start);
+    const endDate = new Date(req.query.end);
+    console.log("Hit burnrate route", uid, startDate, endDate);
+
+    if (!uid || isNaN(startDate) || isNaN(endDate)) {
+      return res.status(400).json({ error: 'Missing or invalid uid/start/end' });
+    }
+
+    const result = await User.aggregate([
+      { $match: { uid: uid } },
+      { $unwind: '$payments' },
+      {
+        $match: {
+          'payments.timestamp': {
+            $gte: startDate,
+            $lte: endDate
+          }
+        }
+      },
+      {
+        $group: {
+          _id: {
+            $dateToString: { format: "%Y-%m-%d", date: "$payments.timestamp" }
+          },
+          totalSpent: { $sum: "$payments.amount" }
+        }
+      },
+      { $sort: { _id: 1 } }
+    ]);
+
+    res.json(result); // [{ _id: "2025-06-15", totalSpent: 1200 }, ...]
+  } catch (err) {
+    console.error('Burnrate error:', err);
+    res.status(500).json({ error: "Failed to compute burn rate" });
+  }
+});
+
+router.get('/payments/category-summary/:uid', async (req, res) => {
+  const { uid } = req.params;
+  const { start, end } = req.query;
+
+  try {
+    const user = await User.findOne({ uid });
+    if (!user) return res.status(404).json({ error: 'User not found' });
+
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+
+    const categoryMap = {};
+    for (const payment of user.payments) {
+      const payDate = new Date(payment.timestamp);
+      if (payDate >= startDate && payDate <= endDate) {
+        const category = payment.category || 'Uncategorized';
+        categoryMap[category] = (categoryMap[category] || 0) + payment.amount;
+      }
+    }
+
+    const summary = Object.entries(categoryMap).map(([category, total]) => ({
+      category,
+      total,
+    }));
+
+    res.json(summary);
+  } catch (err) {
+    console.error('Error in category-summary:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
 module.exports = router;

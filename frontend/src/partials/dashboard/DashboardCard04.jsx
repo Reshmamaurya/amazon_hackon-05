@@ -31,12 +31,12 @@ function DashboardCard04() {
   };
 
   return (
-    <div className="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white dark:bg-gray-800 shadow rounded-2xl p-5">
+    <div className="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white shadow-md rounded-2xl p-5 text-slate-900">
       {/* Card header */}
       <div className="flex justify-between items-start mb-3">
         <div>
-          <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">Direct vs Indirect</h2>
-          <div className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase mt-1">Traffic comparison</div>
+          <h2 className="text-lg font-semibold text-slate-800">Direct vs Indirect</h2>
+          <div className="text-xs font-semibold text-slate-400 uppercase mt-1">Traffic comparison</div>
         </div>
       </div>
 

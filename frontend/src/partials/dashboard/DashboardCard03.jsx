@@ -68,17 +68,17 @@ function DashboardCard03() {
   };
 
   return (
-    <div className="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white dark:bg-gray-800 shadow rounded-2xl p-5">
+    <div className="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white shadow-md rounded-2xl p-5 text-slate-900">
       {/* Card Header */}
       <div className="flex justify-between items-start mb-3">
         <div>
-          <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">Acme Professional</h2>
-          <div className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase mt-1">Sales</div>
+          <h2 className="text-lg font-semibold text-slate-800">Acme Professional</h2>
+          <div className="text-xs font-semibold text-slate-400 uppercase mt-1">Sales</div>
         </div>
         <EditMenu align="right" className="relative inline-flex">
           <li>
             <Link
-              className="font-medium text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-200 flex py-1 px-3"
+              className="font-medium text-sm text-slate-600 hover:text-slate-800 flex py-1 px-3"
               to="#0"
             >
               Option 1
@@ -86,7 +86,7 @@ function DashboardCard03() {
           </li>
           <li>
             <Link
-              className="font-medium text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-200 flex py-1 px-3"
+              className="font-medium text-sm text-slate-600 hover:text-slate-800 flex py-1 px-3"
               to="#0"
             >
               Option 2
@@ -105,14 +105,15 @@ function DashboardCard03() {
 
       {/* Value and Trend */}
       <div className="flex items-center justify-between mb-4">
-        <div className="text-3xl font-bold text-gray-800 dark:text-gray-100">$9,962</div>
-        <div className="text-sm font-medium text-green-700 px-2 py-0.5 bg-green-500/20 rounded-full">+49%</div>
+        <div className="text-3xl font-bold text-slate-900">$9,962</div>
+        <div className="text-sm font-medium text-green-700 px-2 py-0.5 bg-green-100 rounded-full">+49%</div>
       </div>
 
       {/* Chart */}
-      <div className="aspect-[4/3]">
-        <LineChart data={chartData} width={389} height={160} />
+      <div className="h-32 relative">
+        <LineChart data={chartData} width={undefined} height={undefined} className="absolute inset-0 w-full h-full" />
       </div>
+
     </div>
   );
 }
