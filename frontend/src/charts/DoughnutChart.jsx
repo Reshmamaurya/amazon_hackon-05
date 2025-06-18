@@ -23,7 +23,9 @@ function DoughnutChart({
   const { tooltipTitleColor, tooltipBodyColor, tooltipBgColor, tooltipBorderColor } = chartColors; 
 
   useEffect(() => {
+    if (!canvas.current) return;
     const ctx = canvas.current;
+
     // eslint-disable-next-line no-unused-vars
     const newChart = new Chart(ctx, {
       type: 'doughnut',
@@ -125,14 +127,15 @@ function DoughnutChart({
 
   return (
     <div className="grow flex flex-col justify-center">
-      <div>
-        <canvas ref={canvas} width={width} height={height}></canvas>
+      <div className="flex justify-center items-center h-full">
+        <canvas ref={canvas} className="w-full max-w-[300px] aspect-square" />
       </div>
       <div className="px-5 pt-2 pb-6">
         <ul ref={legend} className="flex flex-wrap justify-center -m-1"></ul>
       </div>
     </div>
   );
+  
 }
 
 export default DoughnutChart;

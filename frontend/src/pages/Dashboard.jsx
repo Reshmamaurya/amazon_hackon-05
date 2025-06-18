@@ -6,14 +6,8 @@ import DashboardCard02 from '../partials/dashboard/DashboardCard02';
 import DashboardCard03 from '../partials/dashboard/DashboardCard03';
 import DashboardCard04 from '../partials/dashboard/DashboardCard04';
 import DashboardCard05 from '../partials/dashboard/DashboardCard05';
-import DashboardCard06 from '../partials/dashboard/DashboardCard06';
 import DashboardCard07 from '../partials/dashboard/DashboardCard07';
-import DashboardCard08 from '../partials/dashboard/DashboardCard08';
-import DashboardCard09 from '../partials/dashboard/DashboardCard09';
-import DashboardCard10 from '../partials/dashboard/DashboardCard10';
-import DashboardCard11 from '../partials/dashboard/DashboardCard11';
 import DashboardCard12 from '../partials/dashboard/DashboardCard12';
-import DashboardCard13 from '../partials/dashboard/DashboardCard13';
 
 function Dashboard() {
   const [dateRange, setDateRange] = useState({
@@ -73,36 +67,25 @@ function Dashboard() {
             </div>
 
             {/* Cards 4–13 */}
-            <div className="col-span-12 sm:col-span-6 lg:col-span-4">
-              <DashboardCard04 />
+            <div className="col-span-12 sm:col-span-6 lg:col-span-8">
+              <DashboardCard04 height="short" />
             </div>
             <div className="col-span-12 sm:col-span-6 lg:col-span-4">
-              <DashboardCard05 />
+              <DashboardCard05
+              height="short"
+              startDate={dateRange.from.toISOString().split('T')[0]}
+              endDate={dateRange.to.toISOString().split('T')[0]}
+              />
             </div>
-            <div className="col-span-12 sm:col-span-6 lg:col-span-4">
-              <DashboardCard06 />
-            </div>
+
             <div className="col-span-12 sm:col-span-6 lg:col-span-4">
               <DashboardCard07 />
             </div>
-            <div className="col-span-12 sm:col-span-6 lg:col-span-4">
-              <DashboardCard08 />
-            </div>
-            <div className="col-span-12 sm:col-span-6 lg:col-span-4">
-              <DashboardCard09 />
-            </div>
-            <div className="col-span-12 sm:col-span-6 lg:col-span-4">
-              <DashboardCard10 />
-            </div>
-            <div className="col-span-12 sm:col-span-6 lg:col-span-4">
-              <DashboardCard11 />
-            </div>
-            <div className="col-span-12 sm:col-span-6 lg:col-span-4">
+
+            <div className="col-span-12 sm:col-span-6 lg:col-span-8">
               <DashboardCard12 />
             </div>
-            <div className="col-span-12 sm:col-span-6 lg:col-span-4">
-              <DashboardCard13 />
-            </div>
+
           </div>
 
 

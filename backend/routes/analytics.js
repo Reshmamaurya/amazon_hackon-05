@@ -2,26 +2,38 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 
-// 🔹 GET payment method breakdown for a user
 router.get('/payment-breakdown/:uid', async (req, res) => {
   try {
     const uid = req.params.uid.trim();
+    const { startDate, endDate } = req.query;
+
+    if (!startDate || !endDate) {
+      return res.status(400).json({ error: "Missing date range" });
+    }
+
     const user = await User.findOne({ uid: { $eq: uid } });
     if (!user) return res.status(404).json({ error: "User not found" });
 
-    const payments = user.payments || [];
-    const breakdown = {};
+    const start = new Date(startDate);
+    const end = new Date(endDate);
 
+    const payments = (user.payments || []).filter(p => {
+      const date = new Date(p.timestamp); // ✅ fixed this line
+      return date >= start && date <= end;
+    });
+
+    const breakdown = {};
     payments.forEach(p => {
       breakdown[p.method] = (breakdown[p.method] || 0) + p.amount;
     });
 
-    res.json(breakdown); // ✅ send raw ₹ amounts
+    res.json(breakdown);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to compute breakdown" });
   }
 });
+
 
 // 🔹 GET burn rate for a user within a date range
 router.get('/payments/burnrate/:uid', async (req, res) => {

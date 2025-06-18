@@ -27,6 +27,7 @@ function BarChart01({
 
   useEffect(() => {
     const ctx = canvas.current;
+    if (!ctx) return;
     // eslint-disable-next-line no-unused-vars
     const newChart = new Chart(ctx, {
       type: 'bar',
@@ -193,9 +194,10 @@ function BarChart01({
       <div className="px-5 py-3">
         <ul ref={legend} className="flex flex-wrap gap-x-4"></ul>
       </div>
-      <div className="grow">
-        <canvas ref={canvas} width={width} height={height}></canvas>
+      <div className="flex-1 h-full">
+        <canvas ref={canvas} className="w-full h-full" />
       </div>
+
     </React.Fragment>
   );
 }

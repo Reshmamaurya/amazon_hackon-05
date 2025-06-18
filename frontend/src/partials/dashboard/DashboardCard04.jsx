@@ -31,19 +31,17 @@ function DashboardCard04() {
   };
 
   return (
-    <div className="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white shadow-md rounded-2xl p-5 text-slate-900">
-      {/* Card header */}
-      <div className="flex justify-between items-start mb-3">
-        <div>
-          <h2 className="text-lg font-semibold text-slate-800">Direct vs Indirect</h2>
-          <div className="text-xs font-semibold text-slate-400 uppercase mt-1">Traffic comparison</div>
-        </div>
+    <div className="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white shadow-md rounded-2xl p-5 text-slate-900 h-[320px]">
+      {/* Header */}
+      <div className="mb-2">
+        <h2 className="text-lg font-semibold text-slate-800">Direct vs Indirect</h2>
+        <div className="text-xs font-semibold text-slate-400 uppercase mt-1">Traffic comparison</div>
       </div>
 
-      {/* Chart */}
-      <div className="aspect-[4/3]">
-        <BarChart data={chartData} width={595} height={240} />
-      </div>
+      {/* Chart container */}
+      {/* <div className="flex-grow relative">
+        <BarChart data={chartData} />
+      </div> */}
     </div>
   );
 }
