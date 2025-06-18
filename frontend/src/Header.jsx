@@ -109,7 +109,7 @@ const Header = () => {
           <strong>Cart</strong>
         </div>
         <div className="smartspend-link">
-        <Link to="/smartspend">
+        <Link to="/dashboard">
           <strong>SmartSpend</strong>
         </Link>
         </div>

@@ -1,0 +1,45 @@
+.custom-header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.75rem 1.5rem;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+  
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* Adjust spacing between icons */
+  }
+  
+  .icon-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    width: 36px;
+    border-radius: 8px;
+    background: transparent;
+    transition: background 0.2s ease;
+    cursor: pointer;
+  }
+  
+  .icon-button:hover {
+    background-color: #f3f4f6;
+  }
+  
+  .icon-svg {
+    height: 15px;
+    width: 15px;
+    fill: #4b5563;
+  }
+  
+  .icon-button.active {
+    background-color: #e0f2fe;
+  }
+  
+  .user-menu {
+    margin-left: 0.5rem;
+  }
+  

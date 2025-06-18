@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import { auth } from './firebase';
+import { auth } from '../firebase';
 import { useNavigate } from 'react-router-dom';
 import './LoginPage.css'; // Create this CSS file for styling
 

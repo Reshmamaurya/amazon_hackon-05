@@ -8,10 +8,14 @@ const paymentSchema = new mongoose.Schema({
 });
 
 const userSchema = new mongoose.Schema({
-  uid: String,
+  uid: {
+    type: String,
+    required: true,
+    unique: true,
+    index: true
+  },  
   name: String,
   email: String,
   payments: [paymentSchema],
 });
-
 module.exports = mongoose.model('User', userSchema);

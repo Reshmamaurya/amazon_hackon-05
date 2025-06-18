@@ -12,7 +12,24 @@ app.use(cors());
 app.use(express.json());
 
 // DB connection
-connectDB();
+// After connectDB
+connectDB().then(() => {
+  console.log("User model file:", require.resolve('./models/User'));
+  cleanUserUIDs(); // trim any accidental spaces
+});
+
+// Async cleaner function
+async function cleanUserUIDs() {
+  const users = await User.find();
+  for (let user of users) {
+    const trimmed = user.uid.trim();
+    if (trimmed !== user.uid) {
+      console.log(`Fixing UID "${user.uid}" → "${trimmed}"`);
+      user.uid = trimmed;
+      await user.save();
+    }
+  }
+}
 
 // Routes
 app.get('/', (req, res) => {
