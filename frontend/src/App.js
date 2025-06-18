@@ -5,6 +5,8 @@ import LoginPage from './pages/LoginPage';
 import HomePage from './HomePage'; 
 import SignupPage from './pages/SignupPage';
 import Dashboard from './pages/Dashboard';
+import './App.css';
+
 function App() {
   return (
     <Router>
