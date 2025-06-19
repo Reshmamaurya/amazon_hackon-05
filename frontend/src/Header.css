@@ -184,3 +184,20 @@
   background-color: #d6e0ff;
   transform: translateY(-1px);
 }
+.nav-item {
+  padding: 8px 12px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.nav-item:hover {
+  background-color: #232f3e;
+  cursor: pointer;
+}
+
+.nav-item.active {
+  border-bottom: 2px solid orange;
+  font-weight: bold;
+  color: orange;
+}

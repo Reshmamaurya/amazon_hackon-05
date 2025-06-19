@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { FaSearch, FaShoppingCart, FaBars, FaMapMarkerAlt } from "react-icons/fa";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link,NavLink, useNavigate } from 'react-router-dom';
 import { auth } from './firebase';         // ✅ Your custom auth instance
 import { signOut } from 'firebase/auth';  // import your firebase instance
 import "./Header.css";
+
 
 const Header = () => {
   const [user, setUser] = useState(null);
@@ -126,10 +127,15 @@ const Header = () => {
         <div className="nav-item">Mobiles</div>
         <div className="nav-item">Prime</div>
         <div className="nav-item">Today's Deals</div>
-        <div className="nav-item">Customer Service</div>
-        <div className="nav-item">Fashion</div>
+        
         <div className="nav-item">New Releases</div>
-        <div className="nav-item">Amazon Pay</div>
+<NavLink
+  to="/amazon-pay"
+  className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}
+>
+  Amazon Pay
+</NavLink>
+
         <div className="nav-item">Electronics</div>
         <div className="nav-item">Home & Kitchen</div>
         <div className="nav-item">Computers</div>
