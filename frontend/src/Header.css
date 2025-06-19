@@ -201,3 +201,9 @@
   font-weight: bold;
   color: orange;
 }
+
+.nav-item.active {
+  font-weight: bold;
+  color: #f08804; /* Amazon orange or any highlight color */
+  border-bottom: 2px solid #f08804;
+}
