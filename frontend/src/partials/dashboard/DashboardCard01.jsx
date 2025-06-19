@@ -38,6 +38,7 @@ function DashboardCard01({ startDate, endDate }) {
           labels,
           datasets: [
             {
+              label: 'Spending ₹', // ✅ This adds ₹ to tooltip label
               data: values,
               fill: true,
               backgroundColor: function (context) {
@@ -95,10 +96,9 @@ function DashboardCard01({ startDate, endDate }) {
             </div>
           </EditMenu>
         </div>
-
       </div>
 
-      {/* Value and Growth */}
+      {/* Value and Status */}
       <div className="flex items-center justify-between mb-4">
         <div className="text-3xl font-bold text-slate-900">
           ₹{chartData ? chartData.datasets[0].data.reduce((a, b) => a + b, 0) : '--'}
@@ -111,7 +111,24 @@ function DashboardCard01({ startDate, endDate }) {
       {/* Chart */}
       <div className="h-32 relative">
         {chartData ? (
-          <LineChart data={chartData} className="absolute inset-0 w-full h-full" />
+          <LineChart
+            data={chartData}
+            options={{
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                tooltip: {
+                  callbacks: {
+                    label: function (context) {
+                      return `${context.dataset.label}: ₹${context.parsed.y}`;
+                    },
+                  },
+                },
+                legend: { display: false },
+              },
+            }}
+            className="absolute inset-0 w-full h-full"
+          />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center text-sm text-slate-400">
             Loading...

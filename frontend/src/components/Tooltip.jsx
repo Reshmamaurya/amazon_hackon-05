@@ -37,16 +37,8 @@ function Tooltip({
     }
   };
 
-  const colorClasses = (bg) => {
-    switch (bg) {
-      case 'light':
-        return 'bg-white text-gray-600 border-gray-200';
-      case 'dark':
-        return 'bg-gray-800 text-gray-100 border-gray-700/60';
-      default:
-        return 'text-gray-600 bg-white dark:bg-gray-800 dark:text-gray-100 border-gray-200 dark:border-gray-700/60';
-    }
-  };    
+  const colorClasses = () => 'bg-white text-gray-600 border-gray-200';
+   
 
   const positionInnerClasses = (position) => {
     switch (position) {

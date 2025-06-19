@@ -29,21 +29,21 @@ function DashboardCard05({ startDate, endDate }) {
         const url = new URL(`http://localhost:5000/api/payment-breakdown/${uid}`);
         url.searchParams.append('startDate', startDate);
         url.searchParams.append('endDate', endDate);
-    
+
         const res = await fetch(url);
         if (!res.ok) throw new Error("Failed to fetch payment breakdown");
-    
+
         const data = await res.json();
-        console.log("Payment Breakdown:", data); // Debug
-    
+        console.log("Payment Breakdown:", data);
+
         setBreakdown(data);
-    
+
         const analysisRes = await fetch('http://localhost:5000/api/analysis/payment-method', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ data }),
         });
-    
+
         const { analysis: message } = await analysisRes.json();
         setAnalysis(message || "No insights available.");
       } catch (err) {
@@ -73,7 +73,11 @@ function DashboardCard05({ startDate, endDate }) {
     <div className="flex flex-col bg-white shadow-md rounded-2xl text-slate-900 p-4 h-[320px]">
       {/* Header */}
       <div className="flex justify-between items-start mb-3">
-        <h2 className="text-lg font-semibold">Payment Method Breakdown</h2>
+        <div className="flex flex-col">
+          <h2 className="text-lg font-semibold text-slate-900">Payment Method</h2>
+          <div className="text-xs text-slate-400">MONEY SPENT ON EACH PAYMENT METHOD</div>
+        </div>
+
         <div className="relative">
           <EditMenu align="right">
             <div className="px-4 py-2 text-sm text-slate-700 whitespace-normal max-w-[250px] leading-relaxed">
@@ -97,6 +101,15 @@ function DashboardCard05({ startDate, endDate }) {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
+                  tooltip: {
+                    callbacks: {
+                      label: function (context) {
+                        const label = context.label || '';
+                        const value = context.raw || 0;
+                        return `Spending ₹: ${value}`;
+                      }
+                    }
+                  },
                   legend: { display: false },
                 },
                 cutout: '60%',

@@ -78,11 +78,11 @@ function Dashboard() {
               />
             </div>
 
-            <div className="col-span-12 sm:col-span-6 lg:col-span-4">
+            <div className="col-span-12 sm:col-span-6 lg:col-span-6">
               <DashboardCard07 />
             </div>
 
-            <div className="col-span-12 sm:col-span-6 lg:col-span-8">
+            <div className="col-span-12 sm:col-span-6 lg:col-span-6">
               <DashboardCard12 />
             </div>
 

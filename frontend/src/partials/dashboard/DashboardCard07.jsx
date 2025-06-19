@@ -4,67 +4,102 @@ function DashboardCard07() {
   return (
     <div className="col-span-full xl:col-span-8 bg-white shadow-md rounded-2xl">
       <header className="px-5 py-4 border-b border-slate-200">
-        <h2 className="text-lg font-semibold text-slate-800">Top Channels</h2>
+        <h2 className="text-lg font-semibold text-slate-800">Top Friends</h2>
       </header>
       <div className="p-5">
         <div className="overflow-x-auto">
+        <div className="max-h-80 overflow-y-auto"> {/* 👈 NEW WRAPPER for vertical scroll */}
           <table className="table-auto w-full text-slate-700">
             <thead className="text-xs uppercase text-slate-400 bg-slate-50">
               <tr>
-                <th className="p-2 text-left font-semibold">Source</th>
-                <th className="p-2 text-center font-semibold">Visitors</th>
-                <th className="p-2 text-center font-semibold">Revenues</th>
-                <th className="p-2 text-center font-semibold">Sales</th>
-                <th className="p-2 text-center font-semibold">Conversion</th>
+                <th className="p-2 text-left font-semibold">Friend</th>
+                <th className="p-2 text-center font-semibold">Product</th>
+                <th className="p-2 text-center font-semibold">Order</th>
+                <th className="p-2 text-center font-semibold">Date</th>
               </tr>
             </thead>
             <tbody className="text-sm font-medium divide-y divide-slate-100">
               {/* Each Row */}
               {[
                 {
-                  name: 'Github.com',
-                  icon: ['#24292E', '#FFF'],
-                  path: 'M18 10.2c-4.4 0-8 3.6-8 8...',
-                  visitors: '2.4K',
-                  revenue: '$3,877',
-                  sales: '267',
-                  conversion: '4.7%',
+                  name: 'Amit Singh',
+                  icon: ['#6366F1', '#FFF'],
+                  path: '',
+                  product: 'Sonata Watch',
+                  order: 'ORD123456',
+                  date: 'May 1, 2025',
                 },
                 {
-                  name: 'Facebook',
-                  icon: ['#1877F2', '#FFF'],
-                  path: 'M16.023 26 16 19h-3v-3h3v-2c0-2.7...',
-                  visitors: '2.2K',
-                  revenue: '$3,426',
-                  sales: '249',
-                  conversion: '4.4%',
+                  name: 'Sneha Patel',
+                  icon: ['#F59E0B', '#FFF'],
+                  path: '',
+                  product: 'OnePlus Nord',
+                  order: 'ORD123457',
+                  date: 'Apr 23, 2025',
                 },
                 {
-                  name: 'Google (organic)',
-                  icon: ['#EA4335', '#FFF'],
-                  path: 'M18 17v2.4h4.1c-.2 1-1.2 3-4 3...',
-                  visitors: '2.0K',
-                  revenue: '$2,444',
-                  sales: '224',
-                  conversion: '4.2%',
+                  name: 'Rohan Mehta',
+                  icon: ['#10B981', '#FFF'],
+                  path: '',
+                  product: 'Noise Smartwatch',
+                  order: 'ORD123458',
+                  date: 'Apr 15, 2025',
                 },
                 {
-                  name: 'Vimeo.com',
-                  icon: ['#4BC9FF', '#FFF'],
-                  path: 'M26 14.3c-.1 1.6-1.2 3.7-3.3 6.4...',
-                  visitors: '1.9K',
-                  revenue: '$2,236',
-                  sales: '220',
-                  conversion: '4.2%',
+                  name: 'Kavita Nair',
+                  icon: ['#8B5CF6', '#FFF'],
+                  path: '',
+                  product: 'Summer Top',
+                  order: 'ORD123459',
+                  date: 'Mar 30, 2025',
                 },
                 {
-                  name: 'Indiehackers.com',
-                  icon: ['#0E2439', '#E6ECF4'],
-                  path: 'M14.232 12.818V23H11.77V12.818h2.46...',
-                  visitors: '1.7K',
-                  revenue: '$2,034',
-                  sales: '204',
-                  conversion: '3.9%',
+                  name: 'Jay Verma',
+                  icon: ['#EC4899', '#FFF'],
+                  path: '',
+                  product: 'Pigeon Kettle',
+                  order: 'ORD123460',
+                  date: 'Mar 28, 2025',
+                },
+                {
+                  name: 'Anjali Roy',
+                  icon: ['#3B82F6', '#FFF'],
+                  path: '',
+                  product: 'Saree Combo',
+                  order: 'ORD123461',
+                  date: 'Mar 20, 2025',
+                },
+                {
+                  name: 'Neeraj Kumar',
+                  icon: ['#F43F5E', '#FFF'],
+                  path: '',
+                  product: 'Electric Iron',
+                  order: 'ORD123462',
+                  date: 'Mar 15, 2025',
+                },
+                {
+                  name: 'Priya Sharma',
+                  icon: ['#14B8A6', '#FFF'],
+                  path: '',
+                  product: 'Bluetooth Speaker',
+                  order: 'ORD123463',
+                  date: 'Mar 10, 2025',
+                },
+                {
+                  name: 'Harshit Gupta',
+                  icon: ['#A855F7', '#FFF'],
+                  path: '',
+                  product: 'Gaming Mouse',
+                  order: 'ORD123464',
+                  date: 'Feb 25, 2025',
+                },
+                {
+                  name: 'Mitali Das',
+                  icon: ['#F97316', '#FFF'],
+                  path: '',
+                  product: 'Yoga Mat',
+                  order: 'ORD123465',
+                  date: 'Feb 14, 2025',
                 },
               ].map((row, i) => (
                 <tr key={i}>
@@ -77,15 +112,15 @@ function DashboardCard07() {
                       <div className="text-slate-800">{row.name}</div>
                     </div>
                   </td>
-                  <td className="p-2 text-center">{row.visitors}</td>
-                  <td className="p-2 text-center text-emerald-500">{row.revenue}</td>
-                  <td className="p-2 text-center">{row.sales}</td>
-                  <td className="p-2 text-center text-sky-500">{row.conversion}</td>
+                  <td className="p-2 text-center">{row.product}</td>
+                  <td className="p-2 text-center text-emerald-500">{row.order}</td>
+                  <td className="p-2 text-center">{row.date}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+      </div>
       </div>
     </div>
   );
