@@ -1,0 +1,28 @@
+.transaction-detail-container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 30px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.transaction-detail-container h2 {
+  color: green;
+}
+
+.split-btn {
+  background-color: #ffa41c;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.split-btn:hover {
+  background-color: #ff8c00;
+}
