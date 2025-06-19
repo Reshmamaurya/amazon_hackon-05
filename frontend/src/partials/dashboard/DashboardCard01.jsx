@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import LineChart from '../../charts/LineChart01';
 import { chartAreaGradient } from '../../charts/ChartjsConfig';
@@ -9,26 +8,20 @@ import { adjustColorOpacity, getCssVariable } from '../../utils/Utils';
 function DashboardCard01({ startDate, endDate }) {
   const [chartData, setChartData] = useState(null);
   const [uid, setUid] = useState(null);
+  const [analysis, setAnalysis] = useState("Loading analysis...");
 
   useEffect(() => {
     const auth = getAuth();
-
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUid(user.uid);
-      } else {
-        console.warn('User not logged in');
-        setUid(null);
-      }
+      setUid(user ? user.uid : null);
     });
-
-    return () => unsubscribe(); // cleanup listener
+    return () => unsubscribe();
   }, []);
 
   useEffect(() => {
     if (!uid || !startDate || !endDate) return;
 
-    const fetchBurnRate = async () => {
+    async function fetchBurnRate() {
       try {
         const url = new URL(`http://localhost:5000/api/payments/burnrate/${uid}`);
         url.searchParams.append('start', startDate);
@@ -38,10 +31,9 @@ function DashboardCard01({ startDate, endDate }) {
         if (!response.ok) throw new Error("Failed to fetch burn rate");
 
         const data = await response.json();
-
         const labels = data.map(item => item._id);
         const values = data.map(item => item.totalSpent);
-        
+
         setChartData({
           labels,
           datasets: [
@@ -69,10 +61,21 @@ function DashboardCard01({ startDate, endDate }) {
             },
           ],
         });
+
+        // 🔍 Fetch LLM analysis
+        const analysisRes = await fetch('http://localhost:5000/api/llm-analysis', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ data }),
+        });
+
+        const { analysis: message } = await analysisRes.json();
+        setAnalysis(message || "No insights available.");
       } catch (err) {
-        console.error("Error fetching chart data:", err);
+        console.error("Error:", err);
+        setAnalysis("Failed to load analysis.");
       }
-    };
+    }
 
     fetchBurnRate();
   }, [uid, startDate, endDate]);
@@ -85,11 +88,14 @@ function DashboardCard01({ startDate, endDate }) {
           <h2 className="text-lg font-semibold text-slate-800">Burn Rate</h2>
           <div className="text-xs font-semibold text-slate-400 uppercase mt-1">Spending Trend</div>
         </div>
-        <EditMenu align="right" className="relative inline-flex">
-          <li><Link className="font-medium text-sm text-slate-600 hover:text-slate-800 flex py-1 px-3" to="#0">Option 1</Link></li>
-          <li><Link className="font-medium text-sm text-slate-600 hover:text-slate-800 flex py-1 px-3" to="#0">Option 2</Link></li>
-          <li><Link className="font-medium text-sm text-red-500 hover:text-red-600 flex py-1 px-3" to="#0">Remove</Link></li>
-        </EditMenu>
+        <div className="relative">
+          <EditMenu align="right">
+            <div className="px-4 py-2 text-sm text-slate-700 whitespace-normal max-w-[250px] leading-relaxed">
+              {analysis}
+            </div>
+          </EditMenu>
+        </div>
+
       </div>
 
       {/* Value and Growth */}
@@ -107,7 +113,9 @@ function DashboardCard01({ startDate, endDate }) {
         {chartData ? (
           <LineChart data={chartData} className="absolute inset-0 w-full h-full" />
         ) : (
-          <div className="absolute inset-0 flex items-center justify-center text-sm text-slate-400">Loading...</div>
+          <div className="absolute inset-0 flex items-center justify-center text-sm text-slate-400">
+            Loading...
+          </div>
         )}
       </div>
     </div>
