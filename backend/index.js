@@ -3,7 +3,7 @@ const cors = require('cors');
 const connectDB = require('./db');
 const User = require('./models/User');
 const analyticsRoutes = require('./routes/analytics');
-
+const forecastRoute = require('./routes/forecast')
 const app = express();
 const PORT = 5000;
 
@@ -89,7 +89,7 @@ app.post("/api/users/:uid/payments", async (req, res) => {
 
 // Use external analytics route
 app.use('/api', analyticsRoutes);
-
+app.use('/api', forecastRoute);
 app.listen(PORT, () => {
   console.log(`🚀 Server is running on http://localhost:${PORT}`);
 });

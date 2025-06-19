@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import ForecastModal from '../components/ForecastModal';
 import Datepicker from '../components/Datepicker';
 import DashboardCard01 from '../partials/dashboard/DashboardCard01';
 import DashboardCard02 from '../partials/dashboard/DashboardCard02';
@@ -10,6 +10,7 @@ import DashboardCard07 from '../partials/dashboard/DashboardCard07';
 import DashboardCard12 from '../partials/dashboard/DashboardCard12';
 
 function Dashboard() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [dateRange, setDateRange] = useState({
     from: new Date(2025, 4, 1),     // May 1, 2025
     to: new Date(2025, 4, 15),      // May 15, 2025
@@ -35,12 +36,16 @@ function Dashboard() {
 
               {/* Datepicker */}
               <Datepicker dateRange={dateRange} setDateRange={setDateRange} align="right" />
-                <button className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800">
-                  <svg className="fill-current" width="16" height="16" viewBox="0 0 16 16">
-                    <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
-                  </svg>
-                <span className="font-medium">Add View</span>
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800"
+              >
+                <svg className="fill-current" width="16" height="16" viewBox="0 0 16 16">
+                  <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
+                </svg>
+                <span className="font-medium">Get Forecast</span>
               </button>
+
 
               </div>
 
@@ -92,6 +97,7 @@ function Dashboard() {
           </div>
         </main>
       </div>
+      {isModalOpen && <ForecastModal onClose={() => setIsModalOpen(false)} />}
     </div>
   );
 }
