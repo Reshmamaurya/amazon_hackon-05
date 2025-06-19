@@ -135,6 +135,12 @@ const Header = () => {
 >
   Amazon Pay
 </NavLink>
+  <NavLink
+    to="/group"
+    className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}
+  >
+    Groups
+  </NavLink>
 
         <div className="nav-item">Electronics</div>
         <div className="nav-item">Home & Kitchen</div>
