@@ -6,6 +6,7 @@ const analyticsRoutes = require('./routes/analytics');
 const forecastRoute = require('./routes/forecast')
 const userRoutes = require('./routes/users');     // ✅ NEW
 const groupRoutes = require('./routes/groups');   // ✅ NEW
+const productRoutes = require('./routes/products');
 
 const app = express();
 const PORT = 5000;
@@ -93,6 +94,7 @@ app.post("/api/users/:uid/payments", async (req, res) => {
 
 app.use('/api', forecastRoute);
 app.use('/api', analyticsRoutes); 
+app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);          // e.g., /api/users/:uid/friends
 app.use('/api/groups', groupRoutes);        // e.g., /api/groups/:groupId/members
 

@@ -10,6 +10,7 @@ import TransactionHistory from './transactionhistory';
 import TransactionDetail from './TransactionDetails';
 import SplitDashboard from './pages/SplitDashboard';
 import GroupTab from './pages/GroupTab'; // ✅ Group Tab Import
+import CartPage from './pages/CartPage';
 import './App.css';
 
 function App() {
@@ -24,7 +25,8 @@ function App() {
         <Route path="/amazon-pay" element={<TransactionHistory />} />
         <Route path="/transaction/:id" element={<TransactionDetail />} />
         <Route path="/split/:id" element={<SplitDashboard />} />
-        <Route path="/group" element={<GroupTab />} /> {/* ✅ Group route added */}
+        <Route path="/group" element={<GroupTab />} /> 
+        <Route path="/cart" element={<CartPage/>} />
       </Routes>
     </Router>
   );

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
+const Product = require('../models/Product');
 
 // ✅ Send Friend Request
 router.post('/friend-request', async (req, res) => {
@@ -96,6 +97,69 @@ router.get('/:email/groups', async (req, res) => {
   }
 });
 
+router.post('/:uid/cart', async (req, res) => {
+  const { uid } = req.params;
+  const { productId, quantity } = req.body;
+
+  if (!productId) return res.status(400).json({ error: "productId is required" });
+
+  try {
+    const user = await User.findOne({ uid });
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    const product = await Product.findById(productId);
+    if (!product) return res.status(404).json({ error: "Product not found" });
+
+    // Check if product is already in cart
+    const existingItem = user.cart.find(item => item.product.toString() === productId);
+
+    if (existingItem) {
+      // If product already exists in cart, increase quantity
+      existingItem.quantity += quantity || 1;
+    } else {
+      // Add new product to cart
+      user.cart.push({
+        product: product._id,
+        quantity: quantity || 1
+      });
+    }
+
+    await user.save();
+    res.status(200).json({ message: "Product added to cart", cart: user.cart });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to add product to cart" });
+  }
+});
+
+router.get('/:uid/cart', async (req, res) => {
+  try {
+    const user = await User.findOne({ uid: req.params.uid }).populate('cart.product');
+    if (!user) return res.status(404).json({ error: 'User not found' });
+
+    res.json(user.cart);
+  } catch (err) {
+    console.error('❌ Error fetching cart:', err);
+    res.status(500).json({ error: 'Failed to fetch cart' });
+  }
+});
+
+router.delete('/:uid/cart/:productId', async (req, res) => {
+  const { uid, productId } = req.params;
+
+  try {
+    const user = await User.findOne({ uid });
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    user.cart = user.cart.filter(item => item.product.toString() !== productId);
+    await user.save();
+
+    res.json({ message: "Removed from cart" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to remove product" });
+  }
+});
 module.exports = router;
 
 

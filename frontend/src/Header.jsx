@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { FaSearch, FaShoppingCart, FaBars, FaMapMarkerAlt } from "react-icons/fa";
 import { Link,NavLink, useNavigate } from 'react-router-dom';
-import { auth } from './firebase';         // ✅ Your custom auth instance
-import { signOut } from 'firebase/auth';  // import your firebase instance
+import { auth } from './firebase';         
+import { signOut } from 'firebase/auth';  
 import "./Header.css";
 
 
@@ -105,10 +105,10 @@ const Header = () => {
           <strong>& Orders</strong>
         </div>
 
-        <div className="cart">
+        <Link to="/cart" className="cart flex items-center gap-2 cursor-pointer">
           <FaShoppingCart />
           <strong>Cart</strong>
-        </div>
+        </Link>
         <div className="smartspend-link">
         <Link to="/dashboard">
           <strong>SmartSpend</strong>
