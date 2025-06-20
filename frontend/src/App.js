@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './Header';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
-import HomePage from './HomePage';
+import HomePage from './pages/HomePage';
 import Dashboard from './pages/Dashboard';
 import TransactionHistory from './transactionhistory';
 import TransactionDetail from './TransactionDetails';
@@ -12,6 +12,7 @@ import SplitDashboard from './pages/SplitDashboard';
 import GroupTab from './pages/GroupTab'; // ✅ Group Tab Import
 import CartPage from './pages/CartPage';
 import './App.css';
+
 
 function App() {
   return (
