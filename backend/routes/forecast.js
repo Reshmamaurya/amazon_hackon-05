@@ -1,38 +1,49 @@
+// forecast.js
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
+const { spawn } = require('child_process');
 
-// Forecast total amount for next 30 days
 router.get('/forecast/:uid', async (req, res) => {
   const { uid } = req.params;
 
   try {
     const user = await User.findOne({ uid });
-    console.log(uid);
-    if (!user || !user.payments || user.payments.length === 0) {
-      return res.status(404).json({ message: 'No payment history found.' });
+    if (!user || !user.payments || user.payments.length < 5) {
+      return res.status(400).json({ message: 'Not enough payment data' });
     }
 
-    // Filter payments from the last X days (e.g., 60 days)
-    const now = new Date();
-    const pastPayments = user.payments.filter(p =>
-      (now - new Date(p.timestamp)) / (1000 * 60 * 60 * 24) <= 60
-    );
+    // prepare data to send to Python
+    const paymentHistory = user.payments.map(p => ({
+      amount: p.amount,
+      date: new Date(p.timestamp).toISOString().split('T')[0]
+    }));
 
-    if (pastPayments.length < 3) {
-      return res.status(400).json({ message: 'Not enough data to forecast.' });
-    }
+    const py = spawn('python', ['forecast.py']);
+    let result = '';
 
-    // Calculate average daily spending
-    const totalSpent = pastPayments.reduce((sum, p) => sum + p.amount, 0);
-    const days = 60;
-    const dailyAvg = totalSpent / days;
+    py.stdin.write(JSON.stringify(paymentHistory));
+    py.stdin.end();
 
-    const forecast = dailyAvg * 30;
+    py.stdout.on('data', (data) => result += data.toString());
+    py.stderr.on('data', (err) => console.error('Python Error:', err.toString()));
 
-    res.json({ forecast, dailyAvg });
+    py.on('close', (code) => {
+      if (code !== 0) {
+        return res.status(500).json({ message: 'Python forecast script failed' });
+      }
+
+      try {
+        const forecast = JSON.parse(result);
+        res.json(forecast); // send to frontend
+      } catch (e) {
+        console.error('Failed to parse Python output:', result);
+        res.status(500).json({ message: 'Failed to parse forecast output' });
+      }
+    });
+
   } catch (err) {
-    console.error(err);
+    console.error('Forecast route error:', err);
     res.status(500).json({ message: 'Server error' });
   }
 });

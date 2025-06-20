@@ -92,7 +92,7 @@ app.post("/api/users/:uid/payments", async (req, res) => {
 });
 
 app.use('/api', forecastRoute);
-app.use('/api/analytics', analyticsRoutes); // e.g., /api/analytics/llm-analysis
+app.use('/api', analyticsRoutes); 
 app.use('/api/users', userRoutes);          // e.g., /api/users/:uid/friends
 app.use('/api/groups', groupRoutes);        // e.g., /api/groups/:groupId/members
 
