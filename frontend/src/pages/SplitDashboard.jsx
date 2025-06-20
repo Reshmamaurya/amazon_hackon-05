@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../firebase'; // Adjust path as needed
 import './SplitDashboard.css';
 
-const API_BASE = 'http://localhost:5000'; // ✅ Use backend server port
+const API_BASE = 'http://localhost:5000';
 
-const SplitDashboard = ({
-  transaction = { title: 'Payment XYZ', amount: '₹1000.00' },
-  currentUser = { name: 'You', email: '18reshmamauryas1@gmail.com' }, // ideally from auth context or localStorage
-}) => {
+const SplitDashboard = ({ transaction = { title: 'Payment XYZ', amount: '₹1000.00' } }) => {
+  const [currentUser, setCurrentUser] = useState({ name: '', email: '', _id: '' });
   const [groupName, setGroupName] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [friends, setFriends] = useState([]);
@@ -16,8 +16,25 @@ const SplitDashboard = ({
   const [customAmounts, setCustomAmounts] = useState({});
   const [groups, setGroups] = useState([]);
 
-  // ✅ Fetch friends from backend
+  // ✅ Fetch currently logged in Firebase user
   useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        try {
+          // Optional: fetch full user data from backend using email
+          const res = await axios.get(`${API_BASE}/api/users/${encodeURIComponent(user.email)}`);
+          setCurrentUser(res.data); // Ensure your backend returns name, email, _id
+        } catch (err) {
+          console.error('Error fetching user from backend:', err);
+        }
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
+  // ✅ Fetch friends when current user is set
+  useEffect(() => {
+    if (!currentUser.email) return;
     const fetchFriends = async () => {
       try {
         const res = await axios.get(`${API_BASE}/api/users/${encodeURIComponent(currentUser.email)}/friends`);
@@ -29,6 +46,7 @@ const SplitDashboard = ({
 
     fetchFriends();
   }, [currentUser.email]);
+
 
   const handleSelectFriend = (friend) => {
     setSelectedFriends((prev) =>

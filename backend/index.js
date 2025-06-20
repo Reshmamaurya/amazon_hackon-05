@@ -4,7 +4,7 @@ const connectDB = require('./db');
 const User = require('./models/User');
 const analyticsRoutes = require('./routes/analytics');
 const forecastRoute = require('./routes/forecast')
-const userRoutes = require('./routes/users');     // ✅ NEW
+const userRoutes = require('./routes/users');     
 const groupRoutes = require('./routes/groups');   // ✅ NEW
 const productRoutes = require('./routes/products');
 
