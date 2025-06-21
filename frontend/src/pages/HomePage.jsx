@@ -1,19 +1,4 @@
-// import React from 'react';
-// import Banner from '../components/BannerCarousel';
-// import ProductCard from '../components/ProductCards';
 
-// const HomePage = () => {
-//   return (
-//     <div>
-//       <Banner />
-//       <ProductCard/>
-        
-     
-//     </div>
-//   );
-// };
-
-// export default HomePage;
 import React from 'react';
 import Banner from '../components/BannerCarousel';
 import ProductCard from '../components/ProductCards';
