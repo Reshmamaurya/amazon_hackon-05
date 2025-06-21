@@ -11,6 +11,7 @@ import TransactionDetail from './TransactionDetails';
 import SplitDashboard from './pages/SplitDashboard';
 import GroupTab from './pages/GroupTab'; // ✅ Group Tab Import
 import CartPage from './pages/CartPage';
+import SharedCartPage from './pages/SharedCartPage';
 import './App.css';
 
 
@@ -28,6 +29,7 @@ function App() {
         <Route path="/split/:id" element={<SplitDashboard />} />
         <Route path="/group" element={<GroupTab />} /> 
         <Route path="/cart" element={<CartPage/>} />
+        <Route path="/shared-cart" element={<SharedCartPage />} />
       </Routes>
     </Router>
   );

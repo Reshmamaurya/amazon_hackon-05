@@ -3,7 +3,10 @@ const router = express.Router();
 const User = require('../models/User');
 const Product = require('../models/Product');
 const Group = require('../models/Group'); 
-
+router.use((req, res, next) => {
+  console.log(`Incoming request: ${req.method} ${req.originalUrl}`);
+  next();
+});
 // ✅ Get user by email
 router.get('/:email', async (req, res) => {
   try {
@@ -331,4 +334,120 @@ router.delete('/:uid/cart/:productId', async (req, res) => {
     res.status(500).json({ error: "Failed to remove product" });
   }
 });
+
+
+router.put('/:uid/shared-cart/:productId/shared-with', async (req, res) => {
+  const { uid, productId } = req.params;
+  const { sharedWith } = req.body;
+
+  try {
+    const owner = await User.findOne({ uid });
+    if (!owner) return res.status(404).json({ error: 'User not found' });
+
+    const product = await Product.findById(productId);
+    if (!product) return res.status(404).json({ error: 'Product not found' });
+
+    // Update the owner's cart item's sharedWith list
+    const itemIndex = owner.sharedCart.findIndex(
+      (item) => item.product.toString() === productId
+    );
+    if (itemIndex >= 0) {
+      owner.sharedCart[itemIndex].sharedWith = sharedWith;
+    }
+
+    // Add to each friend's sharedCart
+    for (const friendId of sharedWith) {
+      const friend = await User.findById(friendId);
+      if (!friend) continue;
+
+      // Check if product already exists in friend's sharedCart
+      const alreadyShared = friend.sharedCart.some(
+        (item) => item.product.toString() === productId
+      );
+      if (!alreadyShared) {
+        friend.sharedCart.push({
+          product: product._id,
+          sharedWith: [], // optional: you can ignore or use this if they want to re-share
+        });
+        await friend.save();
+      }
+    }
+
+    await owner.save();
+    res.json({ success: true });
+  } catch (err) {
+    console.error('❌ Error updating sharedWith:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+router.get('/uid/:uid/friends', async (req, res) => {
+  const { uid } = req.params;
+
+  try {
+    const user = await User.findOne({ uid }).populate('friends', 'name uid');
+    if (!user) {
+      console.log("⚠️ No user found with UID:", uid);
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json(user.friends);
+  } catch (err) {
+    console.error('❌ Error fetching friends:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+
+router.post('/:uid/shared-cart', async (req, res) => {
+  const { uid } = req.params;
+  const { productId } = req.body;
+
+  try {
+    const user = await User.findOne({ uid });
+    if (!user) return res.status(404).json({ error: 'User not found' });
+
+    // Check if already exists in sharedCart
+    const alreadyExists = user.sharedCart.some(
+      item => item.product.toString() === productId
+    );
+    if (!alreadyExists) {
+      user.sharedCart.push({
+        product: productId,
+        addedBy: user._id, // optional: tracking who moved it
+        sharedWith: [],    // empty for now
+      });
+    }
+
+    // Remove from personal cart
+    user.cart = user.cart.filter(item => item.product.toString() !== productId);
+
+    await user.save();
+    res.json({ success: true });
+  } catch (err) {
+    console.error('❌ Failed to move item to shared cart:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// backend route: GET /api/users/:uid/shared-cart
+router.get('/:uid/shared-cart', async (req, res) => {
+  const { uid } = req.params;
+
+  try {
+    const user = await User.findOne({ uid })
+      .populate('sharedCart.product')
+      .populate('sharedCart.sharedWith', 'name uid'); // ✅ populate sharedWith details
+
+    if (!user) return res.status(404).json({ error: 'User not found' });
+
+    res.json(user.sharedCart);
+  } catch (err) {
+    console.error('❌ Error fetching shared cart:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+
+
 module.exports = router;

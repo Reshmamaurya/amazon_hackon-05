@@ -8,7 +8,6 @@ const CartPage = () => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
 
-  // Wait for Firebase user
   useEffect(() => {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
@@ -69,11 +68,39 @@ const CartPage = () => {
     }
   };
 
+  const moveToSharedCart = async (productId) => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/users/${user.uid}/shared-cart`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ productId }),
+      });
+  
+      if (!res.ok) {
+        throw new Error('Failed to move item to shared cart');
+      }
+  
+      await removeItem(productId);
+    } catch (err) {
+      console.error('❌ Failed to move to shared cart:', err);
+    }
+  };
+  
+
   if (loading) return <p className="p-6">Loading your cart...</p>;
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Shopping Cart</h1>
+    <div className="p-6 max-w-5xl mx-auto relative">
+      {/* Top Header */}
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Shopping Cart</h1>
+        <button
+          onClick={() => window.location.href = '/shared-cart'}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+        >
+          View Shared Cart
+        </button>
+      </div>
 
       {cart.length === 0 ? (
         <p>Your cart is empty.</p>
@@ -81,12 +108,12 @@ const CartPage = () => {
         <>
           {cart.map((item, idx) => (
             <div key={idx} className="flex items-start gap-6 border-b pb-6 mb-6">
-              <img
+              {/* <img
                 src={item.product.image}
                 alt={item.product.title}
                 className="w-32 h-32 object-contain"
                 onError={(e) => (e.target.src = 'https://via.placeholder.com/100')}
-              />
+              /> */}
 
               <div className="flex-1">
                 <h2 className="text-xl font-semibold">{item.product.title}</h2>
@@ -112,6 +139,13 @@ const CartPage = () => {
                     className="text-sm text-red-500 underline"
                   >
                     Remove
+                  </button>
+
+                  <button
+                    onClick={() => moveToSharedCart(item.product._id)}
+                    className="text-sm text-blue-500 underline"
+                  >
+                    Move to Shared Cart
                   </button>
                 </div>
               </div>
