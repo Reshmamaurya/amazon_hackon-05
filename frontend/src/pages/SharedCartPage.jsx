@@ -91,45 +91,55 @@ const SharedCartPage = () => {
         <p>No items in the shared cart.</p>
       ) : (
         sharedCart.map((item, idx) => (
-            <div key={idx} className="flex items-start gap-6 border-b pb-6 mb-6 justify-between">
-              <div className="flex-1">
-                <h2 className="text-xl font-semibold">{item.product?.title}</h2>
-                <p className="text-sm text-gray-600 mt-1">
-                  {item.product?.description?.slice(0, 100)}...
-                </p>
-                <div className="flex items-center gap-2 mt-2">
-                  <span className="text-lg font-bold text-red-600">₹{item.product?.price}</span>
-                </div>
-                <button
-                  onClick={() => removeFromSharedCart(item.product._id)}
-                  className="mt-4 text-sm text-red-500 underline"
-                >
-                  Remove
-                </button>
-                <button
-                  onClick={() => openFriendSelector(item.product._id)}
-                  className="ml-4 text-sm text-blue-500 underline"
-                >
-                  Add Friends
-                </button>
-              </div>
-          
-              {/* Right side: Shared With list */}
-              <div className="min-w-[180px]">
-                <h3 className="text-sm font-medium text-gray-700">Shared with:</h3>
-                {item.sharedWith?.length === 0 ? (
-                  <p className="text-sm text-gray-500 italic">No friends yet</p>
-                ) : (
-                  <ul className="mt-1 space-y-1">
-                    {item.sharedWith.map((friend) => (
-                      <li key={friend._id} className="text-sm text-gray-800">
-                        {friend.name} ({friend.uid})
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            </div>
+            <div key={idx} className="flex items-start gap-6 border-b pb-6 mb-6">
+  {/* Product Image */}
+  <img
+    src={item.product?.image}
+    alt={item.product?.title}
+    className="w-32 h-32 object-contain"
+    onError={(e) => (e.target.src = 'https://via.placeholder.com/100')}
+  />
+
+  {/* Product Info + Actions */}
+  <div className="flex-1">
+    <h2 className="text-xl font-semibold">{item.product?.title}</h2>
+    <p className="text-sm text-gray-600 mt-1">
+      {item.product?.description?.slice(0, 100)}...
+    </p>
+    <div className="flex items-center gap-2 mt-2">
+      <span className="text-lg font-bold text-red-600">₹{item.product?.price}</span>
+    </div>
+    <button
+      onClick={() => removeFromSharedCart(item.product._id)}
+      className="mt-4 text-sm text-red-500 underline"
+    >
+      Remove
+    </button>
+    <button
+      onClick={() => openFriendSelector(item.product._id)}
+      className="ml-4 text-sm text-blue-500 underline"
+    >
+      Add Friends
+    </button>
+  </div>
+
+  {/* Shared With */}
+  <div className="min-w-[180px]">
+    <h3 className="text-sm font-medium text-gray-700">Shared with:</h3>
+    {item.sharedWith?.length === 0 ? (
+      <p className="text-sm text-gray-500 italic">No friends yet</p>
+    ) : (
+      <ul className="mt-1 space-y-1">
+        {item.sharedWith.map((friend) => (
+          <li key={friend._id} className="text-sm text-gray-800">
+            {friend.name} ({friend.uid})
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+</div>
+
           ))
         )}
           
