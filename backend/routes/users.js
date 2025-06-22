@@ -64,7 +64,7 @@ router.post('/:email/groups/:groupId/pay', async (req, res) => {
 });
 router.post('/:email/notifications/:notificationId/respond', async (req, res) => {
   const { action } = req.body;
-  const { email, notificationId } = req.params;
+  const {  notificationId , email} = req.params;
 
   try {
     const user = await User.findOne({ email }).populate('notifications.from').populate('notifications.group');
@@ -94,94 +94,30 @@ router.post('/:email/notifications/:notificationId/respond', async (req, res) =>
     await fromUser.save();
   }
    await user.save();
-//     if (notification.type === 'group-invite') {
-//   const group = await Group.findById(notification.group);
-
-//   if (!group) {
-//     return res.status(404).json({ message: 'Group not found' });
-//   }
-
-//   // Add user to group.members if not already there
-//   const alreadyInGroup = group.members.some(m => m.userId.toString() === user._id.toString());
-//   if (!alreadyInGroup) {
-//     group.members.push({
-//       userId: user._id,
-//       status: 'accepted',
-//       hasPaid: false
-//     });
-
-//     await group.save();
-
-//     // Add group to user's list
-//     if (!user.groups.includes(group._id)) {
-//       user.groups.push(group._id);
-//     }
-
-//     // Send payment reminder notification
-//     u// 1. Send payment reminder to accepting user
-// user.notifications.push({
-//   message: `Please complete your payment for the group "${group.name}"`,
-//   type: 'payment-reminder',
-//   group: group._id,
-//   isRead: false,
-//   status: 'pending'
-// });
-
-// // 2. Notify other accepted members to pay if not already paid
-// const otherAcceptedMembers = group.members.filter(
-//   m => m.status === 'accepted' && m.userId.toString() !== user._id.toString()
-// );
-
-// for (const member of otherAcceptedMembers) {
-//   const memberUser = await User.findById(member.userId);
-
-//   if (memberUser) {
-//     const alreadyNotified = memberUser.notifications.some(
-//       n => n.type === 'payment-reminder' &&
-//            n.group?.toString() === group._id.toString()
-//     );
-
-//     if (!alreadyNotified) {
-//       memberUser.notifications.push({
-//         message: `Please complete your payment for the group "${group.name}"`,
-//         type: 'payment-reminder',
-//         group: group._id,
-//         isRead: false,
-//         status: 'pending'
-//       });
-//       await memberUser.save(); // Save after adding notification
-//     }
-//   }
-// }
-
-//   }
-// }
 if (notification.type === 'group-invite') {
   const group = await Group.findById(notification.group);
-
+  console.log(group);
   if (!group) {
     return res.status(404).json({ message: 'Group not found' });
   }
 
   // Add or update membership
-  const member = group.members.find(m => m.userId.toString() === user._id.toString());
-
+  const member = Group.members.find(m => m.userId.toString() === user._id.toString());
+  console.log(member);
   if (!member) {
-    group.members.push({
+    Group.members.push({
       userId: user._id,
       status: 'accepted',
       hasPaid: false
     });
-  } else if (member.status === 'invited') {
-    member.status = 'accepted';
-  }
+  } 
 
-  if (!user.groups.includes(group._id)) {
-    user.groups.push(group._id);
+  if (!User.groups.includes(group._id)) {
+    User.groups.push(group._id);
   }
 
   // Notify accepting user to pay
-  user.notifications.push({
+  User.notifications.push({
     message: `Please complete your payment for the group "${group.name}"`,
     type: 'payment-reminder',
     group: group._id,
@@ -190,7 +126,7 @@ if (notification.type === 'group-invite') {
   });
 
   // Notify other accepted members to pay
-  const otherAcceptedMembers = group.members.filter(
+  const otherAcceptedMembers = Group.members.filter(
     m => m.status === 'accepted' && m.userId.toString() !== user._id.toString()
   );
 

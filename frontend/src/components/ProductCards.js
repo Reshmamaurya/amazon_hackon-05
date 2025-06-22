@@ -14,20 +14,24 @@ const ProductCards = () => {
       justifyContent: 'center',
     },
     card: {
-      width: '300px',
-      height: '300px',
-      borderRadius: '12px',
-      backgroundColor: '#fff',
-      boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-      overflow: 'hidden',
-      display: 'flex',
-      flexDirection: 'column',
-    },
+  width: '300px',
+  height: '350px', // increased from 300px
+  borderRadius: '12px',
+  backgroundColor: '#fff',
+  boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+  overflow: 'hidden',
+  display: 'flex',
+  flexDirection: 'column',
+}
+,
     image: {
-      width: '100%',
-      height: '60%',
-      objectFit: 'cover',
-    },
+  width: '100%',
+  height: '180px',
+  objectFit: 'contain',
+  backgroundColor: '#f9f9f9',
+  padding: '10px',
+}
+,
     details: {
       padding: '0.5rem',
       height: '40%',
@@ -109,8 +113,8 @@ const ProductCards = () => {
       <div style={styles.container}>
         {products.map((product) => (
           <div key={product._id} style={styles.card}>
-            <img src={product.image} alt={product.title} style={styles.image} />
-            <div style={styles.details}>
+           <img src={`http://localhost:5000/${product.image}`} alt={product.title} style={styles.image} />
+<div style={styles.details}>
               <h3 style={styles.title}>{product.title}</h3>
               <p style={styles.price}>₹{product.price}</p>
               <button

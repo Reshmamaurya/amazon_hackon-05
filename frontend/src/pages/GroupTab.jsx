@@ -393,7 +393,7 @@ const GroupTab = () => {
                 {notifications.map((n, idx) => (
                   <li key={idx} className="notification-item">
                     <p>{n.message}</p>
-                    {(n.type === 'group-invite' || n.type === 'friend-request') && (
+                    {(n.type === 'group-invite' || n.type === 'friend-request' || n.type ==='payment-reminder' || n.type==='payment-confirmation') && (
                       <div className="notification-actions">
                         <button onClick={() => respondToNotification(n._id, 'accepted')}>Accept</button>
                         <button onClick={() => respondToNotification(n._id, 'declined')}>Decline</button>

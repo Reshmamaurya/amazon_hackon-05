@@ -7,6 +7,8 @@ const forecastRoute = require('./routes/forecast')
 const userRoutes = require('./routes/users');     
 const groupRoutes = require('./routes/groups');   // ✅ NEW
 const productRoutes = require('./routes/products');
+const path = require('path');
+
 
 const app = express();
 const PORT = 5000;
@@ -72,6 +74,7 @@ app.get('/api/users', async (req, res) => {
     res.status(500).json({ error: 'Error fetching users' });
   }
 });
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // Payments
 app.post("/api/users/:uid/payments", async (req, res) => {
