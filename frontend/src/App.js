@@ -14,7 +14,6 @@ import CartPage from './pages/CartPage';
 import SharedCartPage from './pages/SharedCartPage';
 import './App.css';
 
-
 function App() {
   return (
     <Router>
