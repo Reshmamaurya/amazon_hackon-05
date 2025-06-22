@@ -207,3 +207,41 @@
   color: #f08804; /* Amazon orange or any highlight color */
   border-bottom: 2px solid #f08804;
 }
+
+.nav-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  color: #fff;
+  transition: background 0.2s;
+}
+
+.nav-item:hover {
+  background-color: #232f3e;
+}
+
+.nav-item.active {
+  background-color: #f3a847; /* Amazon orange highlight */
+  color: black;              /* Make text readable on orange */
+  font-weight: bold;
+  border-radius: 4px;
+}
+
+.nav-item {
+  padding: 10px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.amazon-pay {
+  color: orange;
+}
+
+.group-tab {
+  color: darkorange;
+}
+
+.nav-item.active {
+  font-weight: bold;
+  border-bottom: 2px solid currentColor; /* underline effect */
+}

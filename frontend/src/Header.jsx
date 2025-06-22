@@ -131,16 +131,21 @@ const Header = () => {
         <div className="nav-item">New Releases</div>
 <NavLink
   to="/amazon-pay"
-  className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}
+  className={({ isActive }) =>
+    `nav-item amazon-pay ${isActive ? "active" : ""}`
+  }
 >
   Amazon Pay
 </NavLink>
-  <NavLink
-    to="/group"
-    className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}
-  >
-    Groups
-  </NavLink>
+
+<NavLink
+  to="/group"
+  className={({ isActive }) =>
+    `nav-item group-tab ${isActive ? "active" : ""}`
+  }
+>
+  Groups
+</NavLink>
 
         <div className="nav-item">Electronics</div>
         <div className="nav-item">Home & Kitchen</div>
