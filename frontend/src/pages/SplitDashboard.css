@@ -1,98 +1,147 @@
-.split-dashboard-wrapper {
+.dashboard-container {
   display: flex;
-  justify-content: space-between;
-  padding: 2rem;
-  font-family: 'Arial', sans-serif;
-  background-color: #fff;
-  color: #111;
+  gap: 30px;
+  padding: 40px;
+  background-color: #f4f6f8;
+  font-family: 'Segoe UI', sans-serif;
 }
 
-.split-dashboard-left,
-.split-dashboard-right {
+/* Left & Right Cards */
+.dashboard-card,
+.group-history-card {
   flex: 1;
-  margin: 1rem;
-  background-color: #f7f7f7;
-  border: 1px solid #ddd;
+  background-color: white;
+  padding: 24px 32px;
   border-radius: 12px;
-  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-h2, h3, h4 {
-  color: #000;
-  margin-bottom: 1rem;
-  font-weight: bold;
+/* Dashboard main title */
+.dashboard-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a73e8;
+  margin-bottom: 12px;
 }
 
-input[type="text"],
-input[type="number"] {
+/* Transaction Info */
+.transaction-info {
+  font-size: 18px;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 20px;
+}
+
+/* Input fields */
+.dashboard-input {
   width: 100%;
-  padding: 10px;
-  margin: 0.5rem 0 1rem;
-  border: 1px solid #000;
+  padding: 12px 14px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
   border-radius: 6px;
-  background-color: #fff;
-  color: #111;
-  font-size: 1rem;
-}
-
-input[type="radio"],
-input[type="checkbox"] {
-  margin-right: 8px;
-  accent-color: black;
-}
-
-.friend-selection {
-  margin: 1rem 0;
-}
-
-.friend-item {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-size: 0.95rem;
-}
-
-.split-mode label {
-  display: inline-block;
-  margin-right: 1rem;
+  font-size: 16px;
   font-weight: 500;
 }
 
-.custom-amounts > div {
-  margin-bottom: 1rem;
+/* Friend checkboxes */
+.friend-list {
+  margin: 24px 0;
 }
 
-button {
-  padding: 12px 20px;
-  font-size: 1rem;
-  font-weight: bold;
-  background-color: #000;
-  color: #fff;
+.friend-list h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.friend-checkbox {
+  display: block;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+/* Split options */
+.split-options {
+  margin: 20px 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.split-options label {
+  margin-right: 20px;
+}
+
+/* Custom input rows */
+.custom-inputs {
+  margin: 24px 0;
+}
+
+.custom-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.custom-row input {
+  width: 120px;
+  padding: 8px 10px;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+  font-weight: 500;
+}
+
+/* Submit button */
+.create-group-btn {
+  background-color: #1a73e8;
+  color: white;
+  padding: 14px 22px;
+  font-size: 16px;
+  font-weight: 600;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  margin-top: 1rem;
-  transition: background-color 0.2s;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
 }
 
-button:hover {
-  background-color: #333;
-}
-
-button:disabled {
-  background-color: #888;
+.create-group-btn:disabled {
+  background-color: #ccc;
   cursor: not-allowed;
 }
 
-.group-box {
-  background-color: #fff;
-  border: 1px solid #ddd;
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 1rem;
+/* Group history title */
+.group-history-card h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #333;
 }
 
-.group-box strong {
-  font-size: 1.1rem;
-  display: block;
-  margin-bottom: 0.5rem;
+/* Group item box */
+.group-item {
+  background-color: #f0f2f5;
+  padding: 14px 18px;
+  border-radius: 8px;
+  margin-bottom: 14px;
+}
+
+.group-item h4 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.group-item ul {
+  margin-top: 8px;
+  padding-left: 18px;
+}
+
+.group-item li {
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 4px;
 }

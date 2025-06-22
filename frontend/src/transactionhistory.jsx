@@ -35,7 +35,12 @@ const TransactionHistory = () => {
       <h2 className="transaction-title">Amazon Pay - Transaction History</h2>
       <div className="transaction-list">
         {transactions.map(tx => (
-          <Link to={`/transaction/${tx.id}`} className="transaction-card" key={tx.id}>
+          <Link
+            to={`/transaction/${tx.id}`}
+            state={{ transaction: tx }}
+            className="transaction-card"
+            key={tx.id}
+          >
             <div className="transaction-info">
               <p className="transaction-name">{tx.title}</p>
               <p className="transaction-date">{tx.date}</p>
