@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { FaTrash, FaUserPlus, FaShoppingCart } from 'react-icons/fa';
 
 const SharedCartPage = () => {
   const [sharedCart, setSharedCart] = useState([]);
@@ -27,11 +28,6 @@ const SharedCartPage = () => {
     try {
       const res = await fetch(`http://localhost:5000/api/users/${uid}/shared-cart`);
       const data = await res.json();
-
-      // Debug log
-      console.log("Shared Cart Raw:", data);
-
-      // Filter out null/missing products
       const validItems = data.filter(item => item.product && item.product._id);
       setSharedCart(validItems);
     } catch (err) {
@@ -87,6 +83,10 @@ const SharedCartPage = () => {
     }
   };
 
+  const handleBuyNow = (product) => {
+    window.location.href = `/checkout/${product._id}`;
+  };
+
   if (loading) return <p className="p-6">Loading shared cart...</p>;
 
   if (sharedCart.length === 0) {
@@ -113,21 +113,36 @@ const SharedCartPage = () => {
             <p className="text-sm text-gray-600 mt-1">
               {item.product.description?.slice(0, 100)}...
             </p>
-            <div className="flex items-center gap-2 mt-2">
+
+            <div className="mt-2">
               <span className="text-lg font-bold text-red-600">₹{item.product.price}</span>
             </div>
-            <button
-              onClick={() => removeFromSharedCart(item.product._id)}
-              className="mt-4 text-sm text-red-500 underline"
-            >
-              Remove
-            </button>
-            <button
-              onClick={() => openFriendSelector(item.product._id)}
-              className="ml-4 text-sm text-blue-500 underline"
-            >
-              Add Friends
-            </button>
+
+            <div className="mt-4 flex flex-wrap gap-3">
+              <button
+                onClick={() => removeFromSharedCart(item.product._id)}
+                className="bg-red-100 text-red-600 hover:bg-red-200 px-4 py-1 rounded-md text-sm font-medium shadow-sm transition flex items-center gap-2"
+              >
+                <FaTrash />
+                Remove
+              </button>
+
+              <button
+                onClick={() => openFriendSelector(item.product._id)}
+                className="bg-blue-100 text-blue-600 hover:bg-blue-200 px-4 py-1 rounded-md text-sm font-medium shadow-sm transition flex items-center gap-2"
+              >
+                <FaUserPlus />
+                Add Friends
+              </button>
+
+              <button
+                onClick={() => handleBuyNow(item.product)}
+                className="bg-green-100 text-green-700 hover:bg-green-200 px-4 py-1 rounded-md text-sm font-medium shadow-sm transition flex items-center gap-2"
+              >
+                <FaShoppingCart />
+                Buy Now
+              </button>
+            </div>
           </div>
 
           {/* Shared With */}
@@ -166,7 +181,9 @@ const SharedCartPage = () => {
               ))}
             </div>
             <div className="mt-4 flex justify-end gap-2">
-              <button onClick={() => setShowModal(false)} className="text-gray-500">Cancel</button>
+              <button onClick={() => setShowModal(false)} className="text-gray-500">
+                Cancel
+              </button>
               <button
                 onClick={handleAddFriendsToProduct}
                 className="bg-blue-600 text-white px-4 py-1 rounded"
