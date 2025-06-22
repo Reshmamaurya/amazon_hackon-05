@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
+require('dotenv').config();
+const uri = process.env.MONGO_URI;
 
-// ✅ Replace with your actual MongoDB URI
-const uri = 'mongodb+srv://wanderlog74:7rZNDZy0eRogTDpS@amazon-hackon.3ju4gsr.mongodb.net/userDB?retryWrites=true&w=majority&appName=amazon-hackon';
 
 const connectDB = async () => {
   try {

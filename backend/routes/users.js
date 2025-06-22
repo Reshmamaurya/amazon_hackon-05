@@ -439,16 +439,22 @@ router.get('/:uid/shared-cart', async (req, res) => {
   try {
     const user = await User.findOne({ uid })
       .populate('sharedCart.product')
-      .populate('sharedCart.sharedWith', 'name uid'); // ✅ populate sharedWith details
+      .populate('sharedCart.sharedWith', 'name uid');
 
     if (!user) return res.status(404).json({ error: 'User not found' });
 
-    res.json(user.sharedCart);
+    // ✅ Deep filter to exclude broken or partially populated items
+    const safeCart = user.sharedCart.filter(
+      item => item.product && item.product._id
+    );
+
+    res.json(safeCart);
   } catch (err) {
     console.error('❌ Error fetching shared cart:', err);
     res.status(500).json({ error: 'Server error' });
   }
 });
+
 
 
 

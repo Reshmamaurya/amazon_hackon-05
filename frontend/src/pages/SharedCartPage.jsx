@@ -27,7 +27,13 @@ const SharedCartPage = () => {
     try {
       const res = await fetch(`http://localhost:5000/api/users/${uid}/shared-cart`);
       const data = await res.json();
-      setSharedCart(data);
+
+      // Debug log
+      console.log("Shared Cart Raw:", data);
+
+      // Filter out null/missing products
+      const validItems = data.filter(item => item.product && item.product._id);
+      setSharedCart(validItems);
     } catch (err) {
       console.error('❌ Error fetching shared cart:', err);
     } finally {
@@ -83,67 +89,66 @@ const SharedCartPage = () => {
 
   if (loading) return <p className="p-6">Loading shared cart...</p>;
 
+  if (sharedCart.length === 0) {
+    return <div className="p-6 max-w-5xl mx-auto">No items in the shared cart.</div>;
+  }
+
   return (
     <div className="p-6 max-w-5xl mx-auto">
       <h1 className="text-3xl font-bold mb-6">Shared Cart</h1>
 
-      {sharedCart.length === 0 ? (
-        <p>No items in the shared cart.</p>
-      ) : (
-        sharedCart.map((item, idx) => (
-            <div key={idx} className="flex items-start gap-6 border-b pb-6 mb-6">
-  {/* Product Image */}
-  <img
-    src={item.product?.image}
-    alt={item.product?.title}
-    className="w-32 h-32 object-contain"
-    onError={(e) => (e.target.src = 'https://via.placeholder.com/100')}
-  />
+      {sharedCart.map((item, idx) => (
+        <div key={idx} className="flex items-start gap-6 border-b pb-6 mb-6">
+          {/* Product Image */}
+          <img
+            src={item.product.image}
+            alt={item.product.title}
+            className="w-32 h-32 object-contain"
+            onError={(e) => (e.target.src = 'https://via.placeholder.com/100')}
+          />
 
-  {/* Product Info + Actions */}
-  <div className="flex-1">
-    <h2 className="text-xl font-semibold">{item.product?.title}</h2>
-    <p className="text-sm text-gray-600 mt-1">
-      {item.product?.description?.slice(0, 100)}...
-    </p>
-    <div className="flex items-center gap-2 mt-2">
-      <span className="text-lg font-bold text-red-600">₹{item.product?.price}</span>
-    </div>
-    <button
-      onClick={() => removeFromSharedCart(item.product._id)}
-      className="mt-4 text-sm text-red-500 underline"
-    >
-      Remove
-    </button>
-    <button
-      onClick={() => openFriendSelector(item.product._id)}
-      className="ml-4 text-sm text-blue-500 underline"
-    >
-      Add Friends
-    </button>
-  </div>
+          {/* Product Info + Actions */}
+          <div className="flex-1">
+            <h2 className="text-xl font-semibold">{item.product.title}</h2>
+            <p className="text-sm text-gray-600 mt-1">
+              {item.product.description?.slice(0, 100)}...
+            </p>
+            <div className="flex items-center gap-2 mt-2">
+              <span className="text-lg font-bold text-red-600">₹{item.product.price}</span>
+            </div>
+            <button
+              onClick={() => removeFromSharedCart(item.product._id)}
+              className="mt-4 text-sm text-red-500 underline"
+            >
+              Remove
+            </button>
+            <button
+              onClick={() => openFriendSelector(item.product._id)}
+              className="ml-4 text-sm text-blue-500 underline"
+            >
+              Add Friends
+            </button>
+          </div>
 
-  {/* Shared With */}
-  <div className="min-w-[180px]">
-    <h3 className="text-sm font-medium text-gray-700">Shared with:</h3>
-    {item.sharedWith?.length === 0 ? (
-      <p className="text-sm text-gray-500 italic">No friends yet</p>
-    ) : (
-      <ul className="mt-1 space-y-1">
-        {item.sharedWith.map((friend) => (
-          <li key={friend._id} className="text-sm text-gray-800">
-            {friend.name} ({friend.uid})
-          </li>
-        ))}
-      </ul>
-    )}
-  </div>
-</div>
+          {/* Shared With */}
+          <div className="min-w-[180px]">
+            <h3 className="text-sm font-medium text-gray-700">Shared with:</h3>
+            {item.sharedWith?.length === 0 ? (
+              <p className="text-sm text-gray-500 italic">No friends yet</p>
+            ) : (
+              <ul className="mt-1 space-y-1">
+                {item.sharedWith.map((friend) => (
+                  <li key={friend._id} className="text-sm text-gray-800">
+                    {friend.name} ({friend.uid})
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+      ))}
 
-          ))
-        )}
-          
-
+      {/* Friend Selector Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded shadow-md max-w-md w-full">
