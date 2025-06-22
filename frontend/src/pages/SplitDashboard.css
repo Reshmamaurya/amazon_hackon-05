@@ -1,67 +1,98 @@
 .split-dashboard-wrapper {
   display: flex;
-  padding: 20px;
-  gap: 30px;
-  font-family: 'Segoe UI', sans-serif;
+  justify-content: space-between;
+  padding: 2rem;
+  font-family: 'Arial', sans-serif;
+  background-color: #fff;
+  color: #111;
 }
 
-.split-dashboard-left, .split-dashboard-right {
+.split-dashboard-left,
+.split-dashboard-right {
   flex: 1;
+  margin: 1rem;
+  background-color: #f7f7f7;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 2rem;
 }
 
-.group-name-input, .search-bar {
+h2, h3, h4 {
+  color: #000;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="number"] {
   width: 100%;
-  padding: 8px;
-  margin: 10px 0;
+  padding: 10px;
+  margin: 0.5rem 0 1rem;
+  border: 1px solid #000;
   border-radius: 6px;
-  border: 1px solid #ccc;
+  background-color: #fff;
+  color: #111;
+  font-size: 1rem;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+  margin-right: 8px;
+  accent-color: black;
 }
 
 .friend-selection {
-  margin-top: 10px;
-  max-height: 200px;
-  overflow-y: auto;
+  margin: 1rem 0;
 }
 
 .friend-item {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
 }
 
-.split-mode {
-  margin: 20px 0;
+.split-mode label {
+  display: inline-block;
+  margin-right: 1rem;
+  font-weight: 500;
 }
 
-.custom-amounts input {
-  margin-left: 10px;
-  width: 100px;
+.custom-amounts > div {
+  margin-bottom: 1rem;
 }
 
 button {
-  padding: 10px 16px;
-  background-color: #007bff;
-  color: white;
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  background-color: #000;
+  color: #fff;
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background-color: #333;
 }
 
 button:disabled {
-  background-color: #aaa;
-}
-
-.split-dashboard-right {
-  background: #f7f7f7;
-  padding: 15px;
-  border-radius: 10px;
-  max-height: 600px;
-  overflow-y: auto;
+  background-color: #888;
+  cursor: not-allowed;
 }
 
 .group-box {
-  margin-bottom: 15px;
-  background: white;
-  padding: 10px;
-  border-radius: 8px;
+  background-color: #fff;
   border: 1px solid #ddd;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.group-box strong {
+  font-size: 1.1rem;
+  display: block;
+  margin-bottom: 0.5rem;
 }

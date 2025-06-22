@@ -60,7 +60,9 @@ const SplitDashboard = ({ transaction = { title: 'Payment XYZ', amount: '₹1000
     setCustomAmounts((prev) => ({ ...prev, [email]: amount }));
   };
 
-  const handleSplit = async () => {
+
+
+const handleSplit = async () => {
   const total = parseFloat(transaction.amount.replace(/[₹,]/g, ''));
   const allParticipants = [currentUser, ...selectedFriends];
 
@@ -70,14 +72,30 @@ const SplitDashboard = ({ transaction = { title: 'Payment XYZ', amount: '₹1000
     const equalAmount = parseFloat((total / allParticipants.length).toFixed(2));
     members = allParticipants.map((user) => ({
       userId: user._id,
+      email: user.email,
       contribution: equalAmount,
     }));
   } else {
-    members = allParticipants.map((user) => ({
-      userId: user._id,
-      contribution:
-        parseFloat(customAmounts[user.email]) || 0,
-    }));
+    // Calculate total assigned to friends
+    const assignedToFriends = selectedFriends.reduce((sum, friend) => {
+      const amt = parseFloat(customAmounts[friend.email]) || 0;
+      return sum + amt;
+    }, 0);
+
+    const creatorContribution = parseFloat((total - assignedToFriends).toFixed(2));
+
+    members = [
+      {
+        userId: currentUser._id,
+        email: currentUser.email,
+        contribution: creatorContribution,
+      },
+      ...selectedFriends.map((friend) => ({
+        userId: friend._id,
+        email: friend.email,
+        contribution: parseFloat(customAmounts[friend.email]) || 0,
+      }))
+    ];
   }
 
   try {
@@ -193,7 +211,8 @@ const SplitDashboard = ({ transaction = { title: 'Payment XYZ', amount: '₹1000
               <strong>{group.name}</strong>
               <ul>
                 {group.details.map((member, idx) => (
-                  <li key={idx}>{member.email}: ₹{member.amount}</li>
+                  <li key={idx}>{member.email}: ₹{member.contribution?.toFixed(2)}</li>
+
                 ))}
               </ul>
             </div>
