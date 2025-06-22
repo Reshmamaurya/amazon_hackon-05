@@ -1,70 +1,114 @@
-# Getting Started with Create React App
+# 💸 SplitEase - Simplifying Group Payments
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### 🏆 Amazon Hackathon 2025 Submission
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 👥 Team Name
+**Hacker_code**
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🎯 Theme
+**Smart Payment Optimization**
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## 📘 Project Overview
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**SplitEase** is a web-based tool that streamlines how people split and settle shared expenses. Whether you're dining with friends, planning a vacation, or managing shared bills as roommates — SplitEase ensures every participant contributes fairly and transparently.
 
-### `npm run build`
+We combine **Firebase Authentication** for secure login, a **Node.js + Express.js backend** to manage all data and logic, and **MongoDB** for persistent storage.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🚀 Key Features
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 🔐 Authentication
+- Secure login via **Firebase Auth** (Email/Password or OAuth)
+- Each user has a personalized profile
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 👥 Friend Management
+- **Add/Search Friends**: Search users by email and send friend requests
+- **Friend List**: View your connections and select them for expenses
+- **Participant Selector**: Choose friends when creating a shared bill
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 💸 Group Expense Splitting
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Split expenses across participants quickly using one of two modes:
 
-## Learn More
+#### ➗ Equal Split
+- The total bill is evenly divided among all participants
+- Example: ₹1,200 split between 4 users → ₹300 per person
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+#### 🎯 Custom Split
+- Assign specific amounts to each participant manually
+- Useful when contributions are unequal (e.g., someone orders more)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The system automatically calculates:
+- **Who owes whom**
+- **How much is owed**
+- **Who has paid**
 
-### Code Splitting
+Balances are saved under each expense group.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+### 🧾 Group Creation & Transaction Records
+- Create a new **group** when splitting an expense
+- Each group stores:
+  - Title of expense
+  - Participants
+  - Split type (equal/custom)
+  - Who paid and how much
+- **Historical View**: Track past groups and contributions
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+## 🛠️ Tech Stack
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+| Layer         | Technology            |
+|---------------|-----------------------|
+| Frontend      | React.js, HTML/CSS    |
+| Backend       | Node.js, Express.js   |
+| Database      | MongoDB               |
+| Auth          | Firebase Authentication |
+| Styling       | Custom CSS (Black & White Theme) |
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## 📸 Screenshots
 
-### Deployment
+> *(Insert screenshots or a video demo here: login page, friend list, expense split screen, group history view, etc.)*
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
+## 📈 Future Improvements
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- 🔁 **Debt Simplification** using Graph Algorithms
+- 📲 **Mobile App** (React Native / Flutter)
+- 📤 **PDF Export** for group expense reports
+- 📊 **Spending Analytics**
+- 💬 **In-App Group Chat**
+
+---
+
+## 🧑‍💻 Authors
+
+- [Nishu Verma](#)
+- [Reshma Maurya](#)
+
+> _(Include GitHub or LinkedIn profile links if available)_
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**.  
+See the `LICENSE` file for more information.
+
+---
