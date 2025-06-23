@@ -154,7 +154,7 @@ const SharedCartPage = () => {
               <ul className="mt-1 space-y-1">
                 {item.sharedWith.map((friend) => (
                   <li key={friend._id} className="text-sm text-gray-800">
-                    {friend.name} ({friend.uid})
+                    {friend.name} 
                   </li>
                 ))}
               </ul>
@@ -176,7 +176,7 @@ const SharedCartPage = () => {
                     checked={selectedFriends.includes(friend._id)}
                     onChange={() => toggleFriendSelection(friend._id)}
                   />
-                  <span>{friend.name} ({friend.uid})</span>
+                  <span>{friend.name} </span>
                 </label>
               ))}
             </div>
